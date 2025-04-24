@@ -1,25 +1,37 @@
-import os
 import circle, square
 
 def main():
-    try:
+    while True:
+        try:
+            # Запрашиваем ввод с клавиатуры
+            print("Введите радиус круга (или 'q' для выхода):")
+            radius_input = input()
+            if radius_input.lower() == 'q':
+                print("Выход...")
+                break
 
-        radius = float(os.getenv('RADIUS', '1.0'))
-        side_length = float(os.getenv('SIDE_LENGTH', '1.0'))
+            print("Введите длину стороны квадрата:")
+            side_length = float(input())
 
-        if radius < 0:
-            raise ValueError("Радиус не может быть отрицательным")
-        if side_length < 0:
-            raise ValueError("Длина стороны квадрата не может быть отрицательной")
+            # Проверяем значения
+            radius = float(radius_input)
+            if radius < 0:
+                raise ValueError("Радиус не может быть отрицательным")
+            if side_length < 0:
+                raise ValueError("Длина стороны квадрата не может быть отрицательной")
 
-        circle_area = circle.area(radius)
-        square_perimeter = square.perimeter(side_length)
+            # Вычисляем
+            circle_area = circle.area(radius)
+            square_perimeter = square.perimeter(side_length)
 
-        print(f"Площадь круга с радиусом {radius} равна {circle_area:.2f}")
-        print(f"Периметр квадрата со стороной {side_length} равен {square_perimeter:.2f}")
+            # Выводим результат
+            print(f"Площадь круга с радиусом {radius} равна {circle_area:.2f}")
+            print(f"Периметр квадрата со стороной {side_length} равен {square_perimeter:.2f}")
+            print()  # Пустая строка для читаемости
 
-    except ValueError as e:
-        print(f"Ошибка: {e}. Пожалуйста, задайте корректные числовые значения для RADIUS и SIDE_LENGTH.")
+        except ValueError as e:
+            print(f"Ошибка: {e}. Пожалуйста, введите корректные числовые значения.")
+            print()
 
 if __name__ == "__main__":
     main()

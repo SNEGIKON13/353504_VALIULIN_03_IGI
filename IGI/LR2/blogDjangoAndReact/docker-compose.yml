@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+
+  redis:
+    restart: always
+    container_name: blog_redis
+    image: redis:5
+    ports:
+      - "6379:6379"
+    networks:
+      - db-net
+
+  db:
+    restart: always
+    container_name: blog_db
+    image: mariadb:5.5
+    environment:
+      - MYSQL_HOST=localhost
+      - MYSQL_PORT=3306
+      - MYSQL_ROOT_HOST=%           
+      - MYSQL_DATABASE=posts
+      - MYSQL_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "3302:3306"
+    networks:
+      - db-net
+
+  django:
+    restart: always
+    container_name: blog_backend
+    command: >
+      sh -c "python manage.py makemigrations
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    build:
+      context: ./backend_django/
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis      
+    networks:
+      - db-net
+
+  reactjs:
+    restart: always
+    command: yarn start
+    container_name: blog_frontend
+    build:
+      context: ./frontend_reactjs/
+      dockerfile: Dockerfile    
+    ports:
+      - "3000:3000"
+    stdin_open: true    
+    depends_on:
+      - django
+    networks:
+      - db-net
+
+networks:
+  db-net:
+    driver: bridge
