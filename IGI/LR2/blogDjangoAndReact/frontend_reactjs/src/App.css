@@ -1,0 +1,172 @@
+.row-header{
+  margin:0px auto;
+  padding:0px auto;
+}
+
+.header {
+  height: 110vh;
+  min-height: 500px;
+  background-image: url(./static/johnconstantinered.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.row-content {
+  margin:0px auto;
+  padding: 10px 0px 50px 0px;
+  border-bottom: 1px ridge;
+  min-height:400px;
+  color: #800080;
+  
+}
+
+.footer{
+  background-color:black;
+  margin:0px auto;
+  padding: 20px 0px 20px 0px;
+  color:floralwhite;
+}
+
+.headerTitle{
+  color:white;
+  font-size: 200%;
+}
+
+.headerText{
+  color:white;
+  font-size:100%;
+}
+
+address{
+  font-size:80%;
+  margin:0px;
+  color:floralwhite;
+}
+
+.navbar-dark {
+  background-color: black;
+}
+
+.commentimg{
+  height: 100px;
+  width: 100px; 
+}
+
+.carousel .carousel-item {
+  /*height: 500px; */
+  height: 91vh;
+}
+
+.carousel-indicators li {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+}
+
+.carousel .carousel-item img {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  /*min-height: 300px;*/
+  height: 100%; 
+  width: 100%; 
+}
+
+.genreImage{
+  width: 230px;
+  height: 310px;
+}
+
+.cardGroup{
+  align-items: center;
+}
+
+.postImage{
+  height: 310px;
+}
+
+.userNav{
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.navbar-dark {
+  color: white; }
+
+.genreLink{
+  text-decoration: none;
+}
+
+.sidebarGenres{
+  background-color: #e9ecef;
+  padding-top: 20px;
+  /*background-color: #F5F5F5;*/
+}
+
+.linkGenre{
+  color:#0000CD;
+}
+
+.postCardTitle{
+  text-align: center;
+}
+
+.postCardDescription{
+  font-size:  14px;
+  text-align: justify;
+}
+
+.textPost{
+  text-align: justify;
+}
+
+.nav-tabs {
+  border-bottom: 0px;
+}
+
+.userNav a, .close {
+  color:white;
+}
+
+.userNav a:hover, .userNav a:visited, .userNav a:link, .userNav a:active
+{
+    text-decoration: none;
+}
+
+.modal-header {
+  background-color: black;
+  text-decoration: none;
+}
+
+.userNav a:hover{
+  color:#A9A9A9;
+}
+
+.postCard{
+  padding-bottom: 30px;
+}
+
+.star {
+  cursor: pointer;
+  height: 25px;
+  width: 25px;
+  margin: 2px;
+  float: left;
+  background-color: grey;
+  clip-path: polygon(
+    50% 0%, 
+    63% 38%,
+    100% 38%, 
+    69% 59%, 
+    82% 100%,
+    50% 75%, 
+    18% 100%, 
+    31% 59%,
+    0% 38%, 
+    37% 38%    
+    );
+}
+    
+.star.selected {
+  background-color: red;
+}
