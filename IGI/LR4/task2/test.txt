@@ -1,0 +1,27 @@
+John Doe <john.doe@example.com>
+alice@example.org
+Bob Smith <bob.smith@company.co.uk>
+charlie123@service.net
+
+123$v_(ac)$bf$v_(1)$ and some other $v_(X)$ tests in the same line.
+
+In our lab we write code. It is fun! Do you like coding? Yes, I do.
+Sometimes we use variables like $v_(2)$ or $v_(z)$ in formulas.
+
+This is the first sentence. Here is a question? And now an imperative command!
+Also one more sentence.
+
+Duplication duplication Duplication test test.
+
+Iran is a country. ice and igloo are words. i is a single letter.
+Invisible items inspire.
+
+Here are some smileys:
+:-)
+;-
+;--)))
+:---(((( 
+:]]]
+;[[[
+
+End of text.
