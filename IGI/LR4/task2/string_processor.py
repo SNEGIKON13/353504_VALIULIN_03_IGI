@@ -1,7 +1,7 @@
 ﻿# Module for string processing (Task 2)
 # Lab Work #4
 # Developer: Valiulin Konstantin
-# Date: 24.10.2023
+# Date: 10.05.2025
 
 import re
 from collections import Counter

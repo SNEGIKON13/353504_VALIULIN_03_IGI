@@ -1,5 +1,4 @@
-﻿# main.py
-# Module for main entry (Task 3)
+﻿# Main module for testing (Task 3)
 # Lab Work #4
 # Developer: Valiulin Konstantin
 # Date: 17.05.2025

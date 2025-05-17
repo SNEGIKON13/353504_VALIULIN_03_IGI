@@ -1,5 +1,4 @@
-﻿# plotter.py
-# Module for plotting (Task 3)
+﻿# Module for plotting (Task 3)
 # Lab Work #4
 # Developer: Valiulin Konstantin
 # Date: 17.05.2025

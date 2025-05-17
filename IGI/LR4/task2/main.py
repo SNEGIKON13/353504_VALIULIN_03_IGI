@@ -1,4 +1,9 @@
-﻿import os
+﻿# Main module for testing (Task 2)
+# Lab Work #4
+# Developer: Valiulin Konstantin
+# Date: 10.05.2025
+
+import os
 from file_utils import read_file, write_results
 from email_parser import extract_emails_and_names
 from string_processor import replace_v_patterns, find_words_with_odd_letters, find_shortest_word_starting_with_i, \

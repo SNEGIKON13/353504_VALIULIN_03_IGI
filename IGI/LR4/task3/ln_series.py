@@ -1,5 +1,4 @@
-﻿# ln_series.py
-# Module for ln_series calculations (Task 3)
+﻿# Module for ln_series calculations (Task 3)
 # Lab Work #4
 # Developer: Valiulin Konstantin
 # Date: 17.05.2025

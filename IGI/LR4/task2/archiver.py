@@ -1,4 +1,9 @@
-﻿import zipfile
+﻿# Module for archiving (Task 2)
+# Lab Work #4
+# Developer: Valiulin Konstantin
+# Date: 10.05.2025
+
+import zipfile
 from datetime import datetime
 
 def create_archive(file_path, archive_name):
