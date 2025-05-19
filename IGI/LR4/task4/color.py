@@ -11,7 +11,7 @@ class FigureColor:
     """
 
     def __init__(self, color):
-        # сразу идёт валидация через сеттер
+        # immediately validate through the setter
         self.color = color
 
     @property
