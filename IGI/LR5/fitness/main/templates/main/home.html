@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Фитнес-клуб</title>
+    <style>
+        .quote-box {
+            margin: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    {% extends 'main/base.html' %}
+
+    {% block title %}Главная{% endblock %}
+
+    {% block content %}
+        <div style="padding: 20px;">
+            <h1>Добро пожаловать в наш фитнес-клуб!</h1>
+
+            {% if article %}
+                <div class="quote-box">
+                    <h2>Последние новости</h2>
+                    <h3>{{ article.title }}</h3>
+                    <p>{{ article.content }}</p>
+                    <small>{{ article.created_at|date:"d.m.Y" }}</small>
+                </div>
+            {% endif %}
+
+            <div class="quote-box">
+                <h2>Цитата дня</h2>
+                <blockquote>
+                    <p>"{{ quote }}"</p>
+                    <footer>— {{ philosopher }}</footer>
+                </blockquote>
+            </div>
+
+            <div class="quote-box">
+                <h2>Совет дня</h2>
+                <p>{{ advice }}</p>
+            </div>
+        </div>
+    {% endblock %}
+</body>
+</html>

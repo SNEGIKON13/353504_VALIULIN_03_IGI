@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Фитнес-клуб - {% block title %}{% endblock %}</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            padding-bottom: 60px;
+        }
+        .quote-box {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .footer {
+            margin-top: 30px;
+            padding: 10px;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+        .nav {
+            background-color: #333;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+        .nav a:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="{% url 'main:home' %}">Главная</a>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+
+    <div class="footer">
+        Валиуллин Константин | Группа 353504 | Май 2025
+    </div>
+</body>
+</html>
