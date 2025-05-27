@@ -3,47 +3,55 @@
 <head>
     <title>Фитнес-клуб - {% block title %}{% endblock %}</title>
     <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            padding-bottom: 60px;
-        }
-        .quote-box {
-            margin: 20px 0;
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .footer {
-            margin-top: 30px;
-            padding: 10px;
-            text-align: center;
-            border-top: 1px solid #eee;
-        }
-        .nav {
-            background-color: #333;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-        .nav a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-        }
-        .nav a:hover {
-            background-color: #555;
-        }
+        body { margin: 0; padding: 20px; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 10px; }
     </style>
 </head>
 <body>
-    <div class="nav">
-        <a href="{% url 'main:home' %}">Главная</a>
+    <div class="nav">        <!-- Основная навигация -->
+        <div>
+            <a href="{% url 'main:home' %}">Главная</a>
+            <a href="{% url 'main:news' %}">Новости</a>
+            <a href="{% url 'main:about' %}">О компании</a>
+            <a href="{% url 'main:staff' %}">Контакты</a>
+            <a href="{% url 'main:services' %}">Услуги</a>
+            <a href="{% url 'main:faq' %}">FAQ</a>
+            <a href="{% url 'main:privacy_policy' %}">Политика конфиденциальности</a>
+            <a href="{% url 'main:reviews' %}">Отзывы</a>
+            <a href="{% url 'main:vacancies' %}">Вакансии</a>
+            <a href="{% url 'main:promos' %}">Акции</a>
+            <a href="{% url 'main:groups_list' %}">Группы</a>
+        </div><!-- Навигация для услуг -->
+        <div>
+            <a href="{% url 'main:services' %}">Услуги</a>
+            <a href="{% url 'main:groups_list' %}">Группы</a>
+        </div>
+
+        <!-- Авторизация и личный кабинет -->
+        <div>            {% if user.is_authenticated %}
+                {% if user.is_instructor %}
+                    <a href="{% url 'main:instructor_schedule' %}">Мое расписание</a>
+                    <a href="{% url 'main:instructor_groups' %}">Мои группы</a>
+                {% else %}
+                    <a href="{% url 'main:user_purchases' %}">Мои покупки</a>
+                {% endif %}
+                {% if user.is_superuser %}
+                    <a href="{% url 'main:admin_statistics' %}">Статистика</a>
+                {% endif %}
+                <a href="{% url 'main:profile' %}">Профиль</a>
+                <a href="{% url 'main:logout' %}">Выйти</a>
+            {% else %}
+                <a href="{% url 'main:login' %}">Войти</a>
+                <a href="{% url 'main:register' %}">Регистрация</a>
+            {% endif %}
+        </div>
     </div>
 
     {% block content %}
     {% endblock %}
 
-    <div class="footer">
+    <div style="margin-top: 20px; text-align: center;">
         Валиуллин Константин | Группа 353504 | Май 2025
     </div>
 </body>

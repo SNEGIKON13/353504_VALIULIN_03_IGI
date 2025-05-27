@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Услуги{% endblock %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <h1>Наши услуги</h1>
+    <div class="services-grid" style="display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+        {% for service in services %}
+            <div class="quote-box">
+                <h3>{{ service.name }}</h3>
+                <p>{{ service.description }}</p>
+                <p>Стоимость: {{ service.price }} руб.</p>
+                <p>Длительность: {{ service.duration }}</p>
+                {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'main:service_book' service.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Записаться</button>
+                    </form>
+                {% else %}
+                    <p><a href="{% url 'main:login' %}">Войдите</a>, чтобы записаться</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

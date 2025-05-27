@@ -1,0 +1,114 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Статистика{% endblock %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <h1>Статистика фитнес-клуба</h1>
+    
+    <div class="quote-box">
+        <h2>Статистика по группам</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Группа</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Количество участников</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Заполненность (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for group in groups_stats %}
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{{ group.name }}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{{ group.member_count }}/{{ group.max_participants }}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{{ group.occupancy_rate|floatformat:1 }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="quote-box">
+        <h2>Общая статистика</h2>
+        <p>Средний возраст клиентов: {{ average_age }} лет</p>
+    </div>
+
+    <div class="quote-box">
+        <h2>Популярные услуги</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Услуга</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Количество записей</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in popular_services %}
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{{ service.name }}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{{ service.booking_count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="quote-box">
+        <h2>Доходы по услугам</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Услуга</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Общий доход</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in service_revenue %}
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{{ item.group__service__name }}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{{ item.total_revenue }} руб.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="quote-box">
+        <h2>График посещаемости</h2>
+        <canvas id="attendanceChart" width="800" height="400"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Safely pass attendance_data as JSON
+    var attendanceData = JSON.parse(document.getElementById('attendance-data').textContent);
+
+    var ctx = document.getElementById('attendanceChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: attendanceData.labels,
+            datasets: [{
+                label: 'Процент посещаемости',
+                data: attendanceData.data,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            }
+        }
+    });
+</script>
+<script id="attendance-data" type="application/json">
+    {{ attendance_data|json_script:"attendance-data" }}
+</script>
+{% endblock %}

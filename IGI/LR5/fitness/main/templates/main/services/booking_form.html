@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Запись на услугу{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Запись на услугу: {{ service.name }}</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ service.name }}</h5>
+            <p class="card-text">{{ service.description }}</p>
+            <p class="card-text"><strong>Цена:</strong> {{ service.price }} руб.</p>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="preferred_date">Предпочтительная дата:</label>
+                    <input type="datetime-local" class="form-control" id="preferred_date" name="preferred_date" required>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Дополнительные пожелания:</label>
+                    <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Записаться</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

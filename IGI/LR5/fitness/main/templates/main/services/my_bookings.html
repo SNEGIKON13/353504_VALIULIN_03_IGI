@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Мои записи{% endblock %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <h1>Мои записи</h1>
+    {% if bookings %}
+        {% for booking in bookings %}
+            <div class="quote-box">
+                <h3>{{ booking.service.name }}</h3>
+                <p>Статус: {{ booking.get_status_display }}</p>
+                <p>Дата создания: {{ booking.created_at|date:"d.m.Y H:i" }}</p>
+                {% if booking.status == 'pending' or booking.status == 'confirmed' %}
+                    <form method="post" action="{% url 'main:booking_cancel' booking.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Отменить запись</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>У вас пока нет записей на услуги</p>
+    {% endif %}
+</div>
+{% endblock %}

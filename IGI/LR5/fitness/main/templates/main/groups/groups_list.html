@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Расписание групп{% endblock %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <h1>Расписание групп</h1>
+    {% for group in groups %}
+        <div class="quote-box">
+            <h3>{{ group.name }}</h3>
+            <p>Услуга: {{ group.service.name }}</p>
+            <p>Зал: {{ group.gym.name }}</p>
+            <p>Инструкторы: 
+                {% for instructor in group.instructors.all %}
+                    {{ instructor.get_full_name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            <p>Период: {{ group.start_date }} - {{ group.end_date }}</p>
+            <p>Стоимость: {{ group.price }} руб.</p>
+            {% if user.is_authenticated and not user.is_instructor %}
+                <a href="{% url 'main:purchase_membership' group.id %}">Записаться</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

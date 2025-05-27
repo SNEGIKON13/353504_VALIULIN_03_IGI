@@ -1,0 +1,29 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Добавить отзыв{% endblock %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <h1>Добавить отзыв</h1>
+    <div class="quote-box">
+        <form method="post">
+            {% csrf_token %}
+            <div style="margin-bottom: 15px;">
+                <label for="rating">Оценка:</label>
+                <select name="rating" id="rating" required>
+                    <option value="5">5 звезд</option>
+                    <option value="4">4 звезды</option>
+                    <option value="3">3 звезды</option>
+                    <option value="2">2 звезды</option>
+                    <option value="1">1 звезда</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label for="text">Отзыв:</label>
+                <textarea name="text" id="text" rows="5" required></textarea>
+            </div>
+            <button type="submit">Отправить</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

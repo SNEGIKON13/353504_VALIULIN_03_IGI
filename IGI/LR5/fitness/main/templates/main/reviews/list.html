@@ -1,0 +1,53 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Отзывы{% endblock %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <h1>Отзывы</h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'main:review_create' %}" class="button">Добавить отзыв</a>
+    </div>
+
+    {% if user_reviews %}
+        <h2>Ваши отзывы</h2>
+        {% for review in user_reviews %}
+            <div class="quote-box">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div>
+                        <h3>Оценка: {{ review.rating }} ★</h3>
+                        <p>{{ review.text }}</p>
+                        <small>{{ review.created_at|date:"d.m.Y" }}</small>
+                        {% if not review.is_approved %}
+                            <span style="color: orange;">(На модерации)</span>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <a href="{% url 'main:review_edit' review.pk %}">Редактировать</a>
+                        <a href="{% url 'main:review_delete' review.pk %}" style="color: red;">Удалить</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <h2>Все отзывы</h2>
+    {% for review in all_reviews %}
+        <div class="quote-box">
+            <h3>{{ review.name }}</h3>
+            <p>Оценка: {{ review.rating }} ★</p>
+            <p>{{ review.text }}</p>
+            <small>{{ review.created_at|date:"d.m.Y" }}</small>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

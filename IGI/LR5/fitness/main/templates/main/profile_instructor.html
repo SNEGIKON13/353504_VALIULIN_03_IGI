@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Кабинет инструктора{% endblock %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <h1>Кабинет инструктора</h1>
+    
+    <div class="quote-box">
+        <h2>Мои группы</h2>
+        {% for group in groups %}
+            <div>
+                <h3>{{ group.name }}</h3>
+                <p>Услуга: {{ group.service.name }}</p>
+                <p>Зал: {{ group.gym.name }}</p>
+                <p>Период: {{ group.start_date }} - {{ group.end_date }}</p>
+            </div>
+        {% empty %}
+            <p>У вас пока нет групп</p>
+        {% endfor %}
+    </div>
+
+    <div class="quote-box">
+        <h2>Ближайшие занятия</h2>
+        {% for session in sessions %}
+            <div>
+                <h3>{{ session.group.name }}</h3>
+                <p>Начало: {{ session.start_time }}</p>
+                <p>Окончание: {{ session.end_time }}</p>
+                <p>Зал: {{ session.group.gym.name }}</p>
+            </div>
+        {% empty %}
+            <p>Нет запланированных занятий</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Наши сотрудники{% endblock %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <h1>Наши сотрудники</h1>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        {% for member in staff_members %}
+            <div class="quote-box">
+                <img src="{{ member.photo.url }}" alt="{{ member.name }}" style="width: 100%; max-width: 200px; height: auto;">
+                <h3>{{ member.name }}</h3>
+                <p><strong>{{ member.position }}</strong></p>
+                <p>{{ member.description }}</p>
+                <p>Телефон: {{ member.phone }}</p>
+                <p>Email: {{ member.email }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

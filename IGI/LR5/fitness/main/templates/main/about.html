@@ -1,0 +1,29 @@
+{% extends 'main/base.html' %}
+
+{% block title %}О компании{% endblock %}
+
+{% block content %}
+<div style="padding: 20px;">
+    {% if company_info %}
+        <h1>{{ company_info.title }}</h1>
+        
+        <div class="quote-box">
+            <h2>О нас</h2>
+            <p>{{ company_info.description }}</p>
+        </div>
+
+        <div class="quote-box">
+            <h2>История</h2>
+            <p>{{ company_info.history }}</p>
+        </div>
+
+        <div class="quote-box">
+            <h2>Контакты</h2>
+            <p>{{ company_info.contacts }}</p>
+            <p>Адрес: {{ company_info.address }}</p>
+        </div>
+    {% else %}
+        <p>Информация о компании скоро появится.</p>
+    {% endif %}
+</div>
+{% endblock %}

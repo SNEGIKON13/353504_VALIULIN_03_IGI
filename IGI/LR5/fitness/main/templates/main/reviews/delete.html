@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Удалить отзыв{% endblock %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <h1>Удалить отзыв</h1>
+    <div class="quote-box">
+        <p>Вы уверены, что хотите удалить этот отзыв?</p>
+        <div style="margin-bottom: 20px;">
+            <h3>Оценка: {{ review.rating }} ★</h3>
+            <p>{{ review.text }}</p>
+            <small>{{ review.created_at|date:"d.m.Y" }}</small>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" style="background-color: red; color: white;">Удалить</button>
+            <a href="{% url 'main:review_list' %}" style="margin-left: 10px;">Отмена</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

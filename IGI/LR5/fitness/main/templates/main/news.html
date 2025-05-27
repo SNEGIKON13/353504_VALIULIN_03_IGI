@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Новости{% endblock %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <h1>Новости фитнес-клуба</h1>
+    
+    {% for article in articles %}
+        <div class="quote-box">
+            {% if article.image %}
+                <img src="{{ article.image.url }}" alt="{{ article.title }}" style="max-width: 300px; margin-bottom: 15px;">
+            {% endif %}
+            <h3>{{ article.title }}</h3>
+            <p>{{ article.summary }}</p>
+            <small>                Опубликовано: {{ article.get_local_time|date:"d/m/Y H:i" }} 
+                (UTC{{ article.get_local_time|date:"O" }})
+            </small>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

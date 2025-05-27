@@ -9,6 +9,10 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+        blockquote {
+            margin: 0;
+            padding: 0;
+        }
     </style>
 </head>
 <body>
@@ -29,18 +33,16 @@
                 </div>
             {% endif %}
 
-            <div class="quote-box">
-                <h2>Цитата дня</h2>
-                <blockquote>
+            {% if user.is_authenticated %}
+                <div class="quote-box">
+                    <h3>Цитата дня:</h3>
                     <p>"{{ quote }}"</p>
-                    <footer>— {{ philosopher }}</footer>
-                </blockquote>
-            </div>
-
-            <div class="quote-box">
-                <h2>Совет дня</h2>
-                <p>{{ advice }}</p>
-            </div>
+                    <small>- {{ philosopher }}</small>
+                    
+                    <h3>Совет дня:</h3>
+                    <p>{{ advice }}</p>
+                </div>
+            {% endif %}
         </div>
     {% endblock %}
 </body>

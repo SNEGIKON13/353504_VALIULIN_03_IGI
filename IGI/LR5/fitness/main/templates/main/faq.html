@@ -1,0 +1,16 @@
+{% extends 'main/base.html' %}
+
+{% block title %}FAQ{% endblock %}
+
+{% block content %}
+<div style="padding: 20px;">
+    <h1>Часто задаваемые вопросы</h1>
+    {% for faq in faqs %}
+        <div class="quote-box">
+            <h3>{{ faq.question }}</h3>
+            <p>{{ faq.answer }}</p>
+            <small>Добавлено: {{ faq.created_at|date:"d.m.Y" }}</small>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
