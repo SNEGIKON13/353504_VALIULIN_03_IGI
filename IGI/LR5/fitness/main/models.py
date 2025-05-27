@@ -240,3 +240,40 @@ class Group(models.Model):
     def available_spots(self):
         """Return number of available spots in the group"""
         return self.capacity - self.members.count()
+
+class Membership(models.Model):
+    STATUS_CHOICES = [
+        ('active', 'Активный'),
+        ('frozen', 'Заморожен'),
+        ('completed', 'Завершен'),
+    ]
+    
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='memberships')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='memberships')
+    date_joined = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active')
+
+    class Meta:
+        db_table = 'memberships'
+        unique_together = ['user', 'group']
+        verbose_name = "Membership"
+        verbose_name_plural = "Memberships"
+
+    def __str__(self):
+        return f"{self.user.username} - {self.group.name}"
+
+class Attendance(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='attendances')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='attendances')
+    session_date = models.DateField()
+    attended = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'attendances'
+        unique_together = ['user', 'group', 'session_date']
+        verbose_name = "Attendance"
+        verbose_name_plural = "Attendances"
+
+    def __str__(self):
+        return f"{self.user.username} - {self.group.name} ({self.session_date})"

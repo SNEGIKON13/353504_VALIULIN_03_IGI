@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои занятия{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Мои занятия</h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    {% for membership in memberships %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ membership.group.name }}</h5>
+            <p class="card-text">
+                <strong>Статус:</strong> {{ membership.get_status_display }}<br>
+                <strong>Дата начала:</strong> {{ membership.group.start_date|date:"d.m.Y" }}<br>
+                <strong>Время занятий:</strong> {{ membership.group.start_time|time:"H:i" }} - {{ membership.group.end_time|time:"H:i" }}
+            </p>
+            <div class="btn-group">
+                {% if membership.status == 'active' %}
+                    <form action="{% url 'main:freeze_membership' membership.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-warning">Заморозить</button>
+                    </form>
+                {% elif membership.status == 'frozen' %}
+                    <form action="{% url 'main:freeze_membership' membership.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">Активировать</button>
+                    </form>
+                {% endif %}
+                <form action="{% url 'main:leave_group' membership.id %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите покинуть группу?')">
+                        Покинуть группу
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>У вас пока нет активных занятий</p>
+    <a href="{% url 'main:groups' %}" class="btn btn-primary">Записаться на занятия</a>
+    {% endfor %}
+</div>
+{% endblock %}

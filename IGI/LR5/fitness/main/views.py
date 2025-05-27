@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.db.models import Count, Sum, F, Q, Case, When, Value, FloatField, Case
 from django.utils import timezone
 from datetime import datetime
-from .models import Article, About, FAQ, Staff, Vacancy, Review, Promo, CustomUser, Group
+from .models import Article, About, FAQ, Staff, Vacancy, Review, Promo, CustomUser, Group, Membership, Attendance
 from .forms import CustomUserCreationForm
 import requests
 from django.utils import timezone
@@ -235,6 +235,198 @@ def groups(request):
         'current_time': local_time,
         'calendar_weeks': calendar_weeks,
     })
+
+@login_required
+def profile(request):
+    context = {'user': request.user}
+    
+    if request.user.is_instructor:
+        # Instructor view
+        instructor_groups = Group.objects.filter(instructors=request.user)
+        upcoming_sessions = []
+        
+        for group in instructor_groups:
+            for date in group.get_schedule_dates():
+                if date >= timezone.now().date():
+                    upcoming_sessions.append({
+                        'group': group,
+                        'date': date,
+                        'attendees': group.members.count()
+                    })
+        
+        context.update({
+            'is_instructor': True,
+            'instructor_groups': instructor_groups,
+            'upcoming_sessions': sorted(upcoming_sessions, key=lambda x: x['date'])
+        })
+        return render(request, 'profile_instructor.html', context)
+    else:
+        # Regular user view
+        memberships = Membership.objects.filter(user=request.user).select_related('group').prefetch_related('group__instructors')
+        attendances = Attendance.objects.filter(
+            user=request.user
+        ).select_related('group').prefetch_related('group__instructors').order_by('-session_date')
+        
+        context.update({
+            'is_instructor': False,
+            'memberships': memberships,
+            'attendances': attendances
+        })
+        return render(request, 'profile.html', context)
+
+@login_required
+def my_classes(request):
+    memberships = Membership.objects.filter(user=request.user).select_related('group')
+    return render(request, 'my_classes.html', {'memberships': memberships})
+
+@login_required
+def join_group(request, group_id):
+    group = get_object_or_404(Group, id=group_id, is_active=True)
+    
+    if group.available_spots <= 0:
+        messages.error(request, 'В группе нет свободных мест')
+        return redirect('main:groups')
+        
+    if Membership.objects.filter(user=request.user, group=group).exists():
+        messages.warning(request, 'Вы уже записаны в эту группу')
+        return redirect('main:my_classes')
+    
+    Membership.objects.create(user=request.user, group=group)
+    messages.success(request, f'Вы успешно записались в группу {group.name}')
+    return redirect('main:my_classes')
+
+@login_required
+def leave_group(request, membership_id):
+    membership = get_object_or_404(Membership, id=membership_id, user=request.user)
+    
+    if request.method == 'POST':
+        membership.delete()
+        messages.success(request, f'Вы покинули группу {membership.group.name}')
+        return redirect('main:my_classes')
+    
+    return render(request, 'confirm_leave_group.html', {'membership': membership})
+
+@login_required
+def freeze_membership(request, membership_id):
+    membership = get_object_or_404(Membership, id=membership_id, user=request.user)
+    
+    if membership.status == 'active':
+        membership.status = 'frozen'
+        messages.success(request, 'Абонемент заморожен')
+    elif membership.status == 'frozen':
+        membership.status = 'active'
+        messages.success(request, 'Абонемент активирован')
+        
+    membership.save()
+    return redirect('main:my_classes')
+
+@login_required
+def my_sessions(request):
+    # Get all user's memberships
+    memberships = Membership.objects.filter(user=request.user)
+    
+    # Get schedule for each group
+    sessions = []
+    for membership in memberships:
+        group = membership.group
+        dates = group.get_schedule_dates()
+        for date in dates:
+            attendance = Attendance.objects.filter(
+                user=request.user,
+                group=group,
+                session_date=date
+            ).first()
+            
+            sessions.append({
+                'group': group,
+                'date': date,
+                'start_time': group.start_time,
+                'end_time': group.end_time,
+                'instructors': group.instructors.all(),
+                'attended': attendance.attended if attendance else False
+            })
+    
+    # Sort sessions by date and time
+    sessions.sort(key=lambda x: (x['date'], x['start_time']))
+    
+    return render(request, 'sessions.html', {
+        'sessions': sessions
+    })
+
+@login_required
+def group_enroll(request, pk):
+    group = get_object_or_404(Group, pk=pk)
+    
+    if request.method == 'POST':
+        # Check if user is already enrolled
+        if Membership.objects.filter(user=request.user, group=group).exists():
+            messages.warning(request, f'Вы уже записаны в группу {group.name}')
+            return redirect('main:groups')
+            
+        if group.available_spots > 0:
+            # Create membership
+            Membership.objects.create(
+                user=request.user,
+                group=group,
+                status='active'
+            )
+            messages.success(request, f'Вы успешно записались в группу {group.name}')
+        else:
+            messages.error(request, 'В группе нет свободных мест')
+    
+    return redirect('main:groups')
+
+@login_required
+def session_create(request):
+    if request.method == 'POST':
+        group_id = request.POST.get('group')
+        session_date = request.POST.get('date')
+        
+        group = get_object_or_404(Group, id=group_id)
+        
+        # Check if user is already a member
+        if not Membership.objects.filter(user=request.user, group=group).exists():
+            messages.error(request, 'Вы не являетесь участником этой группы')
+            return redirect('main:profile')
+            
+        # Check if attendance already exists
+        if Attendance.objects.filter(user=request.user, group=group, session_date=session_date).exists():
+            messages.error(request, 'Вы уже записаны на это занятие')
+            return redirect('main:profile')
+            
+        Attendance.objects.create(
+            user=request.user,
+            group=group,
+            session_date=session_date
+        )
+        messages.success(request, 'Вы успешно записались на занятие')
+        return redirect('main:profile')
+        
+    groups = request.user.member_groups.all()
+    return render(request, 'sessions/create.html', {'groups': groups})
+
+@login_required
+def session_edit(request, pk):
+    attendance = get_object_or_404(Attendance, pk=pk, user=request.user)
+    
+    if request.method == 'POST':
+        attendance.session_date = request.POST.get('date')
+        attendance.save()
+        messages.success(request, 'Запись на занятие обновлена')
+        return redirect('main:profile')
+        
+    return render(request, 'sessions/edit.html', {'attendance': attendance})
+
+@login_required
+def session_delete(request, pk):
+    attendance = get_object_or_404(Attendance, pk=pk, user=request.user)
+    
+    if request.method == 'POST':
+        attendance.delete()
+        messages.success(request, 'Запись на занятие отменена')
+        return redirect('main:profile')
+        
+    return render(request, 'sessions/delete.html', {'attendance': attendance})
 
 
 

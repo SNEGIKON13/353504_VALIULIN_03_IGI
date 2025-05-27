@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import (
     Article, About, FAQ, Staff, Vacancy, Review, Promo, CustomUser,
-    Gym, Equipment, Group
+    Gym, Equipment, Group, Membership, Attendance
 )
 
 @admin.register(Article)
@@ -72,3 +72,15 @@ class GroupAdmin(admin.ModelAdmin):
     list_filter = ('is_active', 'start_date')
     search_fields = ('name', 'description')
     filter_horizontal = ('instructors', 'members')
+
+@admin.register(Membership)
+class MembershipAdmin(admin.ModelAdmin):
+    list_display = ('user', 'group', 'status', 'date_joined')
+    list_filter = ('status', 'group')
+    search_fields = ('user__username', 'group__name')
+
+@admin.register(Attendance)
+class AttendanceAdmin(admin.ModelAdmin):
+    list_display = ('user', 'group', 'session_date', 'attended')
+    list_filter = ('attended', 'session_date', 'group')
+    search_fields = ('user__username', 'group__name')
