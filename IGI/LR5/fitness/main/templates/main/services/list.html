@@ -3,23 +3,60 @@
 {% block title %}Услуги{% endblock %}
 
 {% block content %}
-<div style="padding: 20px;">
+<div class="container mt-4">
     <h1>Наши услуги</h1>
-    <div class="services-grid" style="display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+
+    <!-- Фильтры -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label for="min_price" class="form-label">Минимальная цена</label>
+                    <input type="number" class="form-control" id="min_price" name="min_price" value="{{ min_price|default:'' }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="max_price" class="form-label">Максимальная цена</label>
+                    <input type="number" class="form-control" id="max_price" name="max_price" value="{{ max_price|default:'' }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="sort" class="form-label">Сортировка</label>
+                    <select class="form-select" id="sort" name="sort">
+                        <option value="">По умолчанию</option>
+                        <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>По возрастанию цены</option>
+                        <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>По убыванию цены</option>
+                        <option value="name" {% if sort_by == 'name' %}selected{% endif %}>По названию</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">&nbsp;</label>
+                    <button type="submit" class="btn btn-primary w-100">Применить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Список услуг -->
+    <div class="row">
         {% for service in services %}
-            <div class="quote-box">
-                <h3>{{ service.name }}</h3>
-                <p>{{ service.description }}</p>
-                <p>Стоимость: {{ service.price }} руб.</p>
-                <p>Длительность: {{ service.duration }}</p>
-                {% if user.is_authenticated %}
-                    <form method="post" action="{% url 'main:service_book' service.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Записаться</button>
-                    </form>
-                {% else %}
-                    <p><a href="{% url 'main:login' %}">Войдите</a>, чтобы записаться</p>
-                {% endif %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ service.name }}</h5>
+                        <p class="card-text">{{ service.description }}</p>
+                        <p class="card-text"><strong>Стоимость:</strong> {{ service.price }} руб.</p>
+                        <p class="card-text"><strong>Длительность:</strong> {{ service.duration }} мин.</p>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'main:service_book' service.id %}" class="btn btn-primary">Записаться</a>
+                        {% else %}
+                            <a href="{% url 'main:login' %}" class="btn btn-secondary">Войдите для записи</a>
+                        {% endif %}
+                        <a href="{% url 'main:service_detail' service.id %}" class="btn btn-outline-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <p>Услуги не найдены</p>
             </div>
         {% endfor %}
     </div>

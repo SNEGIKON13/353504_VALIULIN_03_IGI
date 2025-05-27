@@ -23,9 +23,9 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     
     # Услуги и группы
-    path('services/', views.service_list, name='services'),
-    path('services/<int:service_id>/', views.service_detail, name='service_detail'),
     path('services/<int:service_id>/book/', views.service_book, name='service_book'),
+    path('services/<int:service_id>/', views.service_detail, name='service_detail'),
+    path('services/', views.service_list, name='services'),
     path('groups/', views.group_list, name='groups_list'),  # изменено с 'groups' на 'groups_list'
     path('groups/<int:group_id>/', views.group_detail, name='group_detail'),
     path('purchase/<int:group_id>/', views.purchase_membership, name='purchase_membership'),

@@ -14,7 +14,8 @@ class FitnessAdminSite(admin.AdminSite):
         return custom_urls + urls
 
     def statistics_view(self, request):
-        return redirect(reverse('main:admin_statistics'))
+        # Redirect to the statistics view in main app
+        return redirect('main:admin_statistics')
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
