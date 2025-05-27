@@ -1,0 +1,321 @@
+[
+    {
+        "model": "main.customuser",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$hashed_password_here",
+            "is_superuser": true,
+            "username": "admin",
+            "first_name": "Admin",
+            "last_name": "User",
+            "email": "admin@example.com",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2024-01-01T10:00:00Z",
+            "phone": "+375 (29) 123-45-67",
+            "birth_date": "1990-01-01",
+            "is_instructor": false
+        }
+    },
+    {
+        "model": "main.customuser",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$hashed_password_here",
+            "is_superuser": false,
+            "username": "instructor1",
+            "first_name": "John",
+            "last_name": "Doe",
+            "email": "instructor1@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-01-01T10:00:00Z",
+            "phone": "+375 (29) 234-56-78",
+            "birth_date": "1985-01-01",
+            "is_instructor": true
+        }
+    },
+    {
+        "model": "main.customuser",
+        "pk": 3,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$hashed_password_here",
+            "is_superuser": false,
+            "username": "instructor2",
+            "first_name": "Jane",
+            "last_name": "Smith",
+            "email": "instructor2@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-01-02T10:00:00Z",
+            "phone": "+375 (29) 345-67-89",
+            "birth_date": "1988-05-15",
+            "is_instructor": true
+        }
+    },
+    {
+        "model": "main.customuser",
+        "pk": 4,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$hashed_password_here",
+            "is_superuser": false,
+            "username": "client1",
+            "first_name": "Alice",
+            "last_name": "Johnson",
+            "email": "client1@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-01-03T14:30:00Z",
+            "phone": "+375 (29) 456-78-90",
+            "birth_date": "1995-08-20",
+            "is_instructor": false
+        }
+    },
+    {
+        "model": "main.gym",
+        "pk": 1,
+        "fields": {
+            "name": "Основной зал",
+            "description": "Просторный зал с современным оборудованием",
+            "capacity": 50
+        }
+    },
+    {
+        "model": "main.gym",
+        "pk": 2,
+        "fields": {
+            "name": "Зал йоги",
+            "description": "Уютный зал для занятий йогой и стретчингом",
+            "capacity": 20
+        }
+    },
+    {
+        "model": "main.gym",
+        "pk": 3,
+        "fields": {
+            "name": "Кардио-зона",
+            "description": "Зона с беговыми дорожками и велотренажерами",
+            "capacity": 30
+        }
+    },
+    {
+        "model": "main.equipment",
+        "pk": 1,
+        "fields": {
+            "name": "Беговая дорожка",
+            "description": "Профессиональная беговая дорожка",
+            "gym": 3,
+            "quantity": 10
+        }
+    },
+    {
+        "model": "main.equipment",
+        "pk": 2,
+        "fields": {
+            "name": "Гантели",
+            "description": "Набор гантелей от 1 до 25 кг",
+            "gym": 1,
+            "quantity": 20
+        }
+    },
+    {
+        "model": "main.service",
+        "pk": 1,
+        "fields": {
+            "name": "Персональная тренировка",
+            "description": "Индивидуальные занятия с тренером",
+            "price": "50.00",
+            "duration": 60,
+            "is_active": true,
+            "created_at": "2024-01-01T10:00:00Z",
+            "updated_at": "2024-01-01T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.service",
+        "pk": 2,
+        "fields": {
+            "name": "Групповая йога",
+            "description": "Занятия йогой в группе",
+            "price": "25.00",
+            "duration": 90,
+            "is_active": true,
+            "created_at": "2024-01-01T10:00:00Z",
+            "updated_at": "2024-01-01T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.service",
+        "pk": 3,
+        "fields": {
+            "name": "Кроссфит",
+            "description": "Интенсивные групповые тренировки",
+            "price": "35.00",
+            "duration": 45,
+            "is_active": true,
+            "created_at": "2024-01-01T10:00:00Z",
+            "updated_at": "2024-01-01T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.group",
+        "pk": 1,
+        "fields": {
+            "name": "Утренняя йога",
+            "service": 2,
+            "gym": 2,
+            "max_participants": 15,
+            "start_date": "2024-01-01",
+            "end_date": "2024-06-30",
+            "price": "150.00",
+            "instructors": [2]
+        }
+    },
+    {
+        "model": "main.group",
+        "pk": 2,
+        "fields": {
+            "name": "Вечерний кроссфит",
+            "service": 3,
+            "gym": 1,
+            "max_participants": 12,
+            "start_date": "2024-01-01",
+            "end_date": "2024-12-31",
+            "price": "200.00",
+            "instructors": [2, 3]
+        }
+    },
+    {
+        "model": "main.session",
+        "pk": 1,
+        "fields": {
+            "group": 1,
+            "start_time": "2024-01-15T08:00:00Z",
+            "end_time": "2024-01-15T09:30:00Z",
+            "instructors": [2]
+        }
+    },
+    {
+        "model": "main.session",
+        "pk": 2,
+        "fields": {
+            "group": 2,
+            "start_time": "2024-01-15T18:00:00Z",
+            "end_time": "2024-01-15T18:45:00Z",
+            "instructors": [2, 3]
+        }
+    },
+    {
+        "model": "main.membership",
+        "pk": 1,
+        "fields": {
+            "user": 4,
+            "group": 1,
+            "start_date": "2024-01-01",
+            "end_date": "2024-06-30",
+            "payment_amount": "150.00",
+            "payment_date": "2024-01-01",
+            "status": "active"
+        }
+    },
+    {
+        "model": "main.attendance",
+        "pk": 1,
+        "fields": {
+            "session": 1,
+            "member": 4,
+            "attended": true
+        }
+    },
+    {
+        "model": "main.servicebooking",
+        "pk": 1,
+        "fields": {
+            "user": 4,
+            "service": 1,
+            "preferred_date": "2024-01-20T15:00:00Z",
+            "notes": "Первая тренировка",
+            "status": "pending",
+            "created_at": "2024-01-10T12:00:00Z",
+            "updated_at": "2024-01-10T12:00:00Z"
+        }
+    },
+    {
+        "model": "main.article",
+        "pk": 1,
+        "fields": {
+            "title": "Как начать тренировки",
+            "summary": "Советы для начинающих",
+            "content": "Подробное руководство для тех, кто только начинает заниматься спортом...",
+            "created_at": "2024-01-01T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.about",
+        "pk": 1,
+        "fields": {
+            "title": "О нашем фитнес-центре",
+            "description": "Мы предлагаем широкий спектр услуг...",
+            "history": "Наш центр был основан в 2020 году...",
+            "contacts": "Телефон: +375 (29) 999-99-99",
+            "address": "г. Минск, ул. Примерная, 123",
+            "name": "FitnessPro",
+            "phone": "+375 (29) 999-99-99",
+            "email": "info@fitnesspro.by"
+        }
+    },
+    {
+        "model": "main.faq",
+        "pk": 1,
+        "fields": {
+            "question": "Как записаться на тренировку?",
+            "answer": "Вы можете записаться через личный кабинет или позвонить нам...",
+            "created_at": "2024-01-01T10:00:00Z"
+        }
+    },
+    {
+        "model": "main.staff",
+        "pk": 1,
+        "fields": {
+            "name": "John Doe",
+            "position": "Старший тренер",
+            "description": "Сертифицированный тренер с 10-летним опытом...",
+            "phone": "+375 (29) 234-56-78",
+            "email": "john@fitnesspro.by"
+        }
+    },
+    {
+        "model": "main.vacancy",
+        "pk": 1,
+        "fields": {
+            "title": "Тренер по йоге",
+            "description": "Ищем опытного инструктора по йоге...",
+            "requirements": "Опыт работы от 3 лет, сертификация...",
+            "salary": "1000-1500 BYN",
+            "created_at": "2024-01-01T10:00:00Z",
+            "is_active": true
+        }
+    },
+    {
+        "model": "main.review",
+        "pk": 1,
+        "fields": {
+            "name": "Alice Johnson",
+            "rating": 5,
+            "text": "Отличный фитнес-центр! Профессиональные тренеры...",
+            "created_at": "2024-01-15T14:30:00Z"
+        }
+    },
+    {
+        "model": "main.promo",
+        "pk": 1,
+        "fields": {
+            "code": "NEWYEAR2024",
+            "description": "Скидка 20% на годовой абонемент",
+            "discount": 20,
+            "valid_from": "2024-01-01T00:00:00Z",
+            "valid_to": "2024-01-31T23:59:59Z",
+            "is_active": true
+        }
+    }
+]

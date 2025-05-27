@@ -1,21 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.urls import path
-from django.shortcuts import redirect
-from django.urls import reverse
 from .models import Article, About, FAQ, Staff, Vacancy, Review, Promo, CustomUser, Gym, Equipment, Service, Group, Session, Membership, Attendance, ServiceBooking
-
-class FitnessAdminSite(admin.AdminSite):
-    def get_urls(self):
-        urls = super().get_urls()
-        custom_urls = [
-            path('statistics/', self.admin_view(self.statistics_view), name='admin_statistics'),
-        ]
-        return custom_urls + urls
-
-    def statistics_view(self, request):
-        # Redirect to the statistics view in main app
-        return redirect('main:admin_statistics')
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):

@@ -35,7 +35,7 @@
                     <a href="{% url 'main:user_purchases' %}">Мои покупки</a>
                 {% endif %}
                 {% if user.is_superuser %}
-                    <a href="{% url 'main:admin_statistics' %}">Статистика</a>
+                    <a href="{% url 'admin_statistics' %}">Статистика</a>
                 {% endif %}
                 <a href="{% url 'main:profile' %}">Профиль</a>
                 <a href="{% url 'main:logout' %}">Выйти</a>

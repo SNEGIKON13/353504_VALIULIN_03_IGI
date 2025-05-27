@@ -12,7 +12,6 @@ urlpatterns = [
     path('staff/', views.staff, name='staff'),
     
     # Статистика для администратора
-    path('admin/statistics/', views.admin_statistics, name='admin_statistics'),
     path('privacy/', views.privacy_policy, name='privacy_policy'),
     path('vacancies/', views.vacancies, name='vacancies'),
     path('promos/', views.promos, name='promos'),  # Добавляем маршрут для промо-акций
@@ -46,7 +45,4 @@ urlpatterns = [
     path('bookings/', views.booking_list, name='my_bookings'),
     path('bookings/<int:booking_id>/edit/', views.booking_edit, name='booking_edit'),
     path('bookings/<int:booking_id>/cancel/', views.booking_cancel, name='booking_cancel'),
-
-    # Административная статистика
-    path('admin/statistics/', views.admin_statistics, name='admin_statistics'),
 ]
