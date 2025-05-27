@@ -23,7 +23,6 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
-    path('admin/statistics/', staff_member_required(login_required(views.admin_statistics)), name='admin_statistics'),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),  # Add this line for admin access
     path('', include('main.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

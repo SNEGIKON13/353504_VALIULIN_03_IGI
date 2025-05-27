@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Article, About, FAQ, Staff, Vacancy, Review, Promo, CustomUser, Gym, Equipment, Service, Group, Session, Membership, Attendance, ServiceBooking
+from .models import (
+    Article, About, FAQ, Staff, Vacancy, Review, Promo, CustomUser,
+    Gym, Equipment, Group
+)
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
@@ -42,59 +45,30 @@ class PromoAdmin(admin.ModelAdmin):
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-    list_display = ('username', 'email', 'phone', 'age', 'is_instructor')
+    list_display = ('username', 'email', 'phone', 'birth_date', 'is_instructor')
     search_fields = ('username', 'email', 'phone')
     list_filter = ('is_instructor', 'is_staff')
     fieldsets = UserAdmin.fieldsets + (
-        ('Additional Info', {'fields': ('phone', 'age', 'is_instructor')}),
+        ('Additional Info', {'fields': ('phone', 'birth_date', 'is_instructor')}),
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
-        ('Additional Info', {'fields': ('phone', 'age', 'is_instructor')}),
+        ('Additional Info', {'fields': ('phone', 'birth_date', 'is_instructor')}),
     )
 
 @admin.register(Gym)
 class GymAdmin(admin.ModelAdmin):
     list_display = ('name', 'capacity')
-    search_fields = ('name',)
+    search_fields = ('name', 'description')
 
 @admin.register(Equipment)
 class EquipmentAdmin(admin.ModelAdmin):
     list_display = ('name', 'gym', 'quantity')
-    list_filter = ('gym',)
-
-@admin.register(Service)
-class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'duration', 'is_active')
     search_fields = ('name', 'description')
-    list_filter = ('is_active',)
+    list_filter = ('gym',)
 
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
-    list_display = ('name', 'service', 'gym', 'start_date', 'end_date', 'price')
-    list_filter = ('service', 'gym')
-    filter_horizontal = ('instructors',)
-
-@admin.register(Session)
-class SessionAdmin(admin.ModelAdmin):
-    list_display = ('group', 'start_time', 'end_time')
-    list_filter = ('group',)
-    filter_horizontal = ('instructors',)
-
-@admin.register(Membership)
-class MembershipAdmin(admin.ModelAdmin):
-    list_display = ('user', 'group', 'start_date', 'end_date', 'status')
-    list_filter = ('status', 'group')
-    search_fields = ('user__username',)
-
-@admin.register(Attendance)
-class AttendanceAdmin(admin.ModelAdmin):
-    list_display = ('session', 'member', 'attended')
-    list_filter = ('attended', 'session')
-
-@admin.register(ServiceBooking)
-class ServiceBookingAdmin(admin.ModelAdmin):
-    list_display = ('user', 'service', 'preferred_date', 'status', 'created_at')
-    list_filter = ('status', 'service')
-    search_fields = ('user__username', 'service__name', 'notes')
-    raw_id_fields = ('user', 'service')
-    readonly_fields = ('created_at', 'updated_at')
+    list_display = ('name', 'price', 'duration', 'capacity', 'start_date', 'start_time', 'is_active')
+    list_filter = ('is_active', 'start_date')
+    search_fields = ('name', 'description')
+    filter_horizontal = ('instructors', 'members')

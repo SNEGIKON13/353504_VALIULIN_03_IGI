@@ -5,20 +5,18 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.db.models import Count, Sum, F, Q, Case, When, Value, FloatField, Case
 from django.utils import timezone
-import json
 from datetime import datetime
-from .models import CustomUser, Service, Group, Session, Membership, ServiceBooking
-from datetime import datetime
-from .models import Article, About, FAQ, Staff, Vacancy, Review, Promo, Service, Group, Session, Membership, CustomUser, ServiceBooking
+from .models import Article, About, FAQ, Staff, Vacancy, Review, Promo, CustomUser, Group
 from .forms import CustomUserCreationForm
 import requests
 from django.utils import timezone
 from django.db.models import Sum, Count, Avg, F, Q
 from django.db.models.functions import ExtractMonth
 from datetime import timedelta
-import io
-import base64
 import json
+import pytz
+from calendar import monthcalendar
+from datetime import datetime, timedelta
 
 def get_random_quote():
     try:
@@ -175,257 +173,68 @@ def logout_view(request):
     logout(request)
     return redirect('main:home')
 
-def is_instructor(user):
-    return user.is_instructor
-
-@login_required
-def profile(request):
-    if request.user.is_instructor:
-        # Для инструктора
-        instructor_groups = Group.objects.filter(instructors=request.user)
-        upcoming_sessions = Session.objects.filter(
-            instructors=request.user,
-            start_time__gte=timezone.now()
-        ).order_by('start_time')
-        return render(request, 'profile_instructor.html', {
-            'groups': instructor_groups,
-            'sessions': upcoming_sessions
-        })
-    else:
-        # Для клиента
-        active_memberships = Membership.objects.filter(
-            user=request.user,
-            status='active'
-        )
-        available_services = Service.objects.all()
-        total_spent = Membership.objects.filter(
-            user=request.user
-        ).aggregate(total=Sum('payment_amount'))['total'] or 0
-        return render(request, 'profile_client.html', {
-            'memberships': active_memberships,
-            'services': available_services,
-            'total_spent': total_spent
-        })
-
-@login_required
-def purchase_membership(request, group_id):
-    group = get_object_or_404(Group, id=group_id)
-    if request.method == 'POST':
-        # Проверка наличия мест в группе
-        current_members = Membership.objects.filter(group=group, status='active').count()
-        if current_members >= group.max_participants:
-            messages.error(request, 'Группа уже заполнена')
-            return redirect('main:profile')
-            
-        # Создание членства
-        Membership.objects.create(
-            user=request.user,
-            group=group,
-            start_date=group.start_date,
-            end_date=group.end_date,
-            payment_amount=group.price,
-            payment_date=timezone.now().date(),
-            status='active'
-        )
-        messages.success(request, 'Вы успешно записались в группу')
-        return redirect('main:profile')
-    return render(request, 'purchase_membership.html', {'group': group})
-
-@login_required
-@user_passes_test(is_instructor)
-def instructor_schedule(request):
-    upcoming_sessions = Session.objects.filter(
-        instructors=request.user,
-        start_time__gte=timezone.now()
-    ).order_by('start_time')
-    return render(request, 'instructor_schedule.html', {
-        'sessions': upcoming_sessions
-    })
-
-def service_list(request):
-    # Make services visible for all users
-    services = Service.objects.all()
+def groups(request):
+    groups_list = Group.objects.filter(is_active=True)
     
-    # Filter by price range
-    min_price = request.GET.get('min_price')
-    max_price = request.GET.get('max_price')
-    if min_price:
-        services = services.filter(price__gte=min_price)
-    if max_price:
-        services = services.filter(price__lte=max_price)
-        
-    # Sort by price or name
+    # Сортировка
     sort_by = request.GET.get('sort')
     if sort_by == 'price_asc':
-        services = services.order_by('price')
+        groups_list = groups_list.order_by('price')
     elif sort_by == 'price_desc':
-        services = services.order_by('-price')
-    elif sort_by == 'name':
-        services = services.order_by('name')
+        groups_list = groups_list.order_by('-price')
+    elif sort_by == 'duration_asc':
+        groups_list = groups_list.order_by('duration')
+    elif sort_by == 'duration_desc':
+        groups_list = groups_list.order_by('-duration')
     
-    return render(request, 'services/list.html', {
-        'services': services,
-        'min_price': min_price,
-        'max_price': max_price,
-        'sort_by': sort_by
+    # Получаем текущее время в UTC
+    now = timezone.now()
+    local_tz = pytz.timezone('Europe/Minsk')
+    local_time = now.astimezone(local_tz)
+    
+    # Подготавливаем данные для календаря
+    calendar_data = {}
+    for group in groups_list:
+        for date in group.get_schedule_dates():
+            if date not in calendar_data:
+                calendar_data[date] = []
+            calendar_data[date].append({
+                'name': group.name,
+                'start_time': group.start_time,
+                'end_time': group.end_time,
+                'available_spots': group.available_spots
+            })
+    
+    # Подготовка календаря
+    today = timezone.now().date()
+    cal = monthcalendar(today.year, today.month)
+    calendar_weeks = []
+    
+    for week in cal:
+        week_data = []
+        for day_num in week:
+            if day_num != 0:
+                current_date = datetime(today.year, today.month, day_num).date()
+                day_events = []
+                for group in groups_list:
+                    if current_date in group.get_schedule_dates():
+                        day_events.append({
+                            'name': group.name,
+                            'start_time': group.start_time,
+                            'end_time': group.end_time,
+                        })
+                week_data.append(({"day": day_num, "date": current_date}, day_events))
+            else:
+                week_data.append(({"day": 0, "date": None}, []))
+        calendar_weeks.append(week_data)
+    
+    return render(request, 'groups.html', {
+        'groups': groups_list,
+        'current_sort': sort_by,
+        'calendar_data': calendar_data,
+        'current_time': local_time,
+        'calendar_weeks': calendar_weeks,
     })
 
-def service_detail(request, service_id):
-    service = get_object_or_404(Service, id=service_id)
-    groups = Group.objects.filter(service=service)
-    return render(request, 'services/detail.html', {
-        'service': service,
-        'groups': groups
-    })
 
-def group_list(request):
-    groups = Group.objects.all()
-    return render(request, 'groups/groups_list.html', {'groups': groups})
 
-def group_detail(request, group_id):
-    group = get_object_or_404(Group, id=group_id)
-    return render(request, 'groups/detail.html', {'group': group})
-
-@login_required
-def user_purchases(request):
-    memberships = Membership.objects.filter(user=request.user)
-    return render(request, 'profile/purchases.html', {'memberships': memberships})
-
-@login_required
-def instructor_groups(request):
-    if not request.user.is_instructor:
-        messages.error(request, 'Доступ запрещен')
-        return redirect('main:home')
-    groups = Group.objects.filter(instructors=request.user)
-    return render(request, 'instructor/groups.html', {'groups': groups})
-
-@login_required
-def booking_list(request):
-    bookings = ServiceBooking.objects.filter(user=request.user).select_related('service').order_by('-created_at')
-    return render(request, 'services/booking_list.html', {'bookings': bookings})
-
-@login_required
-def booking_edit(request, booking_id):
-    booking = get_object_or_404(ServiceBooking, id=booking_id, user=request.user)
-    if request.method == 'POST':
-        try:
-            preferred_date = timezone.make_aware(datetime.strptime(
-                request.POST.get('preferred_date'),
-                '%Y-%m-%dT%H:%M'
-            ))
-            booking.preferred_date = preferred_date
-            booking.notes = request.POST.get('notes', '')
-            booking.status = 'pending'  # Reset status to pending after edit
-            booking.save()
-            messages.success(request, 'Запись успешно обновлена')
-            return redirect('main:my_bookings')
-        except ValueError:
-            messages.error(request, 'Неверный формат даты')
-    return render(request, 'services/booking_form.html', {
-        'booking': booking,
-        'service': booking.service
-    })
-
-@login_required
-def booking_cancel(request, booking_id):
-    booking = get_object_or_404(ServiceBooking, id=booking_id, user=request.user)
-    if request.method == 'POST':
-        booking.status = 'cancelled'
-        booking.save()
-        messages.success(request, 'Запись отменена')
-        return redirect('main:my_bookings')
-    return render(request, 'services/booking_cancel.html', {'booking': booking})
-
-@login_required
-def service_book(request, service_id):
-    service = get_object_or_404(Service, id=service_id)
-    if request.method == 'POST':
-        try:
-            preferred_date = timezone.make_aware(datetime.strptime(
-                request.POST.get('preferred_date'),
-                '%Y-%m-%dT%H:%M'
-            ))
-            
-            # Validate that the preferred date is in the future
-            if preferred_date <= timezone.now():
-                messages.error(request, 'Дата записи должна быть в будущем')
-                return render(request, 'services/booking_form.html', {'service': service})
-                
-            booking = ServiceBooking.objects.create(
-                user=request.user,
-                service=service,
-                preferred_date=preferred_date,
-                notes=request.POST.get('notes', ''),
-                status='pending'
-            )
-            messages.success(request, 'Вы успешно записались на услугу')
-            return redirect('main:my_bookings')
-        except ValueError:
-            messages.error(request, 'Неверный формат даты')
-    return render(request, 'services/booking_form.html', {'service': service})
-
-from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
-
-@login_required
-@staff_member_required
-def admin_statistics(request):
-    # Статистика по группам
-    groups_stats = Group.objects.annotate(
-        member_count=Count('membership'),
-        occupancy_rate=Case(
-            When(max_participants__gt=0, 
-                 then=F('member_count') * 100.0 / F('max_participants')),
-            default=Value(0.0),
-            output_field=FloatField(),
-        )
-    )
-
-    # Средний возраст клиентов
-    users_with_age = CustomUser.objects.filter(is_instructor=False).exclude(birth_date=None)
-    ages = [user.age() for user in users_with_age if user.age() is not None]
-    average_age = sum(ages) / len(ages) if ages else 0
-
-    # Популярные услуги
-    popular_services = Service.objects.annotate(
-        booking_count=Count('servicebooking')
-    ).order_by('-booking_count')[:5]
-
-    # Доходы по услугам
-    service_revenue = Membership.objects.values(
-        'group__service__name'
-    ).annotate(
-        total_revenue=Sum('payment_amount')
-    ).order_by('-total_revenue')
-
-    # Статистика посещаемости с защитой от деления на ноль
-    attendance_stats = Session.objects.annotate(
-        attendance_count=Count('attendance', filter=Q(attendance__attended=True)),
-        total_members=Count('group__membership'),
-        attendance_rate=Case(
-            When(total_members__gt=0,
-                 then=F('attendance_count') * 100.0 / F('total_members')),
-            default=Value(0.0),
-            output_field=FloatField(),
-        )
-    )
-
-    # Данные для графика
-    attendance_data = {
-        'labels': [session.start_time.strftime('%d/%m/%Y') for session in attendance_stats],
-        'data': [float(session.attendance_rate) for session in attendance_stats]
-    }
-
-    context = {
-        'groups_stats': groups_stats,
-        'average_age': round(average_age, 1),
-        'popular_services': popular_services,
-        'service_revenue': service_revenue,
-        'attendance_stats': attendance_stats,
-        'attendance_data': json.dumps(attendance_data)
-    }
-
-    return render(request, 'admin/statistics.html', context)
-
-def list_groups(request):
-    return render(request, 'main/groups_list.html')

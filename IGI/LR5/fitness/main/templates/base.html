@@ -14,6 +14,7 @@
             <a href="{% url 'main:home' %}">Главная</a>
             <a href="{% url 'main:news' %}">Новости</a>
             <a href="{% url 'main:about' %}">О компании</a>
+            <a href="{% url 'main:groups' %}">Группы</a>
             <a href="{% url 'main:staff' %}">Контакты</a>
             <a href="{% url 'main:faq' %}">FAQ</a>
             <a href="{% url 'main:privacy_policy' %}">Политика конфиденциальности</a>
@@ -21,23 +22,9 @@
             <a href="{% url 'main:vacancies' %}">Вакансии</a>
             <a href="{% url 'main:promos' %}">Акции</a>
         </div><!-- Навигация для услуг -->
-        <div>
-            <a href="{% url 'main:services' %}">Услуги</a>
-            <a href="{% url 'main:groups_list' %}">Группы</a>
-        </div>
 
         <!-- Авторизация и личный кабинет -->
         <div>            {% if user.is_authenticated %}
-                {% if user.is_instructor %}
-                    <a href="{% url 'main:instructor_schedule' %}">Мое расписание</a>
-                    <a href="{% url 'main:instructor_groups' %}">Мои группы</a>
-                {% else %}
-                    <a href="{% url 'main:user_purchases' %}">Мои покупки</a>
-                {% endif %}
-                {% if user.is_superuser %}
-                    <a href="{% url 'admin_statistics' %}">Статистика</a>
-                {% endif %}
-                <a href="{% url 'main:profile' %}">Профиль</a>
                 <a href="{% url 'main:logout' %}">Выйти</a>
             {% else %}
                 <a href="{% url 'main:login' %}">Войти</a>

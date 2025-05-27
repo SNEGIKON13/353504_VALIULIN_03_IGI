@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 from datetime import date
+from django.utils import timezone
 
 class CustomUserCreationForm(UserCreationForm):
     birth_date = forms.DateField(
@@ -25,3 +26,5 @@ class CustomUserCreationForm(UserCreationForm):
         if age < 18:
             raise forms.ValidationError('Вы должны быть старше 18 лет для регистрации')
         return birth_date
+
+
