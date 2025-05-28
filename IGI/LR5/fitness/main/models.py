@@ -42,8 +42,12 @@ class CustomUser(AbstractUser):
         
     def age(self):
         if self.birth_date:
-            today = timezone.now()
-            return today.year - self.birth_date.year - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
+            today = timezone.now().date()
+            age = today.year - self.birth_date.year
+            # Only subtract a year if birthday hasn't occurred this year
+            if (today.month, today.day) < (self.birth_date.month, self.birth_date.day):
+                age -= 1
+            return age
         return None
         
     def is_adult(self):

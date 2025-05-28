@@ -36,7 +36,3 @@ class TimezoneMiddleware:
         
         response = self.get_response(request)
         return response
-
-    def __del__(self):
-        if self.reader:
-            self.reader.close()
