@@ -281,6 +281,22 @@ def groups(request, year=None, month=None, min_price=None, max_price=None, min_d
                 week_data.append(({"day": 0, "date": None}, []))
         calendar_weeks.append(week_data)
     
+    # Get timezone info
+    user_timezone = request.session.get('user_timezone', 'Europe/Minsk')
+    user_tz = pytz.timezone(user_timezone)
+    utc_tz = pytz.UTC
+    
+    now = timezone.now()
+    user_time = now.astimezone(user_tz)
+    utc_time = now.astimezone(utc_tz)
+    
+    for group in groups_list:
+        # Add timezone-aware dates
+        group.local_created = group.created_at.astimezone(user_tz).strftime("%d/%m/%Y %H:%M")
+        group.utc_created = group.created_at.astimezone(utc_tz).strftime("%d/%m/%Y %H:%M")
+        group.local_updated = group.updated_at.astimezone(user_tz).strftime("%d/%m/%Y %H:%M")
+        group.utc_updated = group.updated_at.astimezone(utc_tz).strftime("%d/%m/%Y %H:%M")
+
     context = {
         'groups': groups_list,
         'current_sort': sort_by,
@@ -288,6 +304,10 @@ def groups(request, year=None, month=None, min_price=None, max_price=None, min_d
         'current_time': local_time,
         'calendar_weeks': calendar_weeks,
         'api_requests_remaining': api_requests_remaining,
+        'user_timezone': user_timezone,
+        'utc_timezone': 'UTC',
+        'user_time': user_time.strftime("%d/%m/%Y %H:%M"),
+        'utc_time': utc_time.strftime("%d/%m/%Y %H:%M"),
     }
     
     return render(request, 'groups.html', context)

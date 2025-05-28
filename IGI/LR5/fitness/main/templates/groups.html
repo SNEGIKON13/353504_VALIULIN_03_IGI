@@ -47,8 +47,10 @@
     </div>
     {% endif %}
     
+    <!-- Add timezone information -->
     <div class="alert alert-info">
-        Текущее время: {{ current_time|date:"d.m.Y H:i" }}
+        <p>Текущее время: {{ user_time }} ({{ user_timezone }})</p>
+        <p>UTC время: {{ utc_time }}</p>
     </div>
     
     <div class="row mb-4">
@@ -177,6 +179,14 @@
                                 <button class="btn btn-secondary" disabled>Нет мест</button>
                             {% endif %}
                         {% endif %}
+                    </div>
+                    <div class="card-footer text-muted">
+                        <small>
+                            Создано: {{ group.local_created }} ({{ user_timezone }})<br>
+                            UTC: {{ group.utc_created }}<br>
+                            Обновлено: {{ group.local_updated }} ({{ user_timezone }})<br>
+                            UTC: {{ group.utc_updated }}
+                        </small>
                     </div>
                 </div>
             </div>
