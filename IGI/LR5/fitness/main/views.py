@@ -562,14 +562,40 @@ def admin_statistics(request):
     # Group statistics
     groups_stats = []
     for group in groups:
+        # Count active members through Membership model
+        member_count = Membership.objects.filter(
+            group=group,
+            status='active'
+        ).count()
+
+        # Calculate actual revenue from active memberships
+        revenue = group.price * member_count
+
+        # Count sessions in the date range
+        session_count = 0
+        if start_date and end_date:
+            session_dates = set()  # Use set to avoid duplicate dates
+            from datetime import datetime
+            start = datetime.strptime(start_date, '%Y-%m-%d').date()
+            end = datetime.strptime(end_date, '%Y-%m-%d').date()
+            
+            for date in group.get_all_session_dates():  # We'll add this method to Group model
+                if start <= date <= end:
+                    session_dates.add(date)
+            session_count = len(session_dates)
+        
+        # Get all members for this group through Membership
+        members = CustomUser.objects.filter(
+            memberships__group=group,
+            memberships__status='active'
+        ).values('username')
+        
         group_data = {
             'name': group.name,
-            'member_count': group.members.count(),
-            'revenue': group.price * group.members.count(),
-            'sessions': Attendance.objects.filter(
-                group=group,
-                session_date__range=(start_date, end_date)
-            ).count()
+            'member_count': member_count,
+            'revenue': revenue,
+            'sessions': session_count,
+            'members': members  # Only contains usernames now
         }
         groups_stats.append(group_data)
 
@@ -594,21 +620,10 @@ def admin_statistics(request):
     revenue_plot = base64.b64encode(buffer.getvalue()).decode()
     plt.close()
 
-    # Calculate attendance rate
-    total_sessions = Attendance.objects.filter(
-        session_date__range=(start_date, end_date)
-    ).count()
-    attended_sessions = Attendance.objects.filter(
-        session_date__range=(start_date, end_date),
-        attended=True
-    ).count()
-    attendance_rate = (attended_sessions / total_sessions * 100) if total_sessions > 0 else 0
-
     context = {
         'clients': clients_with_stats,
         'total_revenue': total_revenue,
         'total_active_clients': total_active_clients,
-        'attendance_rate': round(attendance_rate, 1),
         'spending_stats': spending_stats,
         'age_stats': age_stats,
         'groups_stats': groups_stats[:10],  # Top 10 groups

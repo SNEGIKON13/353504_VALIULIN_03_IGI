@@ -37,7 +37,7 @@
 
     <!-- Основные показатели -->
     <div class="row mb-4">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-body text-center">
                     <h5 class="card-title">Активных клиентов</h5>
@@ -45,19 +45,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-body text-center">
                     <h5 class="card-title">Общий доход</h5>
                     <h2>{{ total_revenue }} руб.</h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Посещаемость за месяц</h5>
-                    <h2>{{ attendance_rate }}%</h2>
                 </div>
             </div>
         </div>
@@ -128,7 +120,21 @@
                     <tbody>
                         {% for group in groups_stats %}
                         <tr>
-                            <td>{{ group.name }}</td>
+                            <td>
+                                {{ group.name }}
+                                <div class="mt-1">
+                                    {% if group.members %}
+                                        <small class="text-muted">
+                                        Участники: 
+                                        {% for member in group.members %}
+                                            ({{ member.username }}){% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                        </small>
+                                    {% else %}
+                                        <small class="text-muted">Нет участников</small>
+                                    {% endif %}
+                                </div>
+                            </td>
                             <td>{{ group.member_count }}</td>
                             <td>{{ group.revenue }} руб.</td>
                             <td>{{ group.sessions }}</td>

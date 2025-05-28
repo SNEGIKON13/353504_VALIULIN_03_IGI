@@ -12,6 +12,24 @@ class CustomUser(AbstractUser):
     phone = models.CharField(validators=[phone_regex], max_length=20, unique=True)
     birth_date = models.DateField(verbose_name="Дата рождения", null=True)
     is_instructor = models.BooleanField(default=False)
+    SUBSCRIPTION_CHOICES = [
+        ('none', 'Нет абонемента'),
+        ('single', 'Разовое посещение'),
+        ('basic', 'Базовый'),  
+        ('premium', 'Премиум'),
+        ('unlimited', 'Безлимитный'),
+    ]
+    subscription = models.CharField(
+        max_length=10, 
+        choices=SUBSCRIPTION_CHOICES,
+        default='none',
+        verbose_name="Тип абонемента"
+    )
+    subscription_end = models.DateField(
+        null=True, 
+        blank=True,
+        verbose_name="Дата окончания абонемента"
+    )
 
     class Meta:
         db_table = 'users'
@@ -244,6 +262,16 @@ class Group(models.Model):
         
         # Return only the next upcoming date if exists
         return dates[:1] if dates else []
+
+    def get_all_session_dates(self):
+        """Return all session dates without filtering by today's date"""
+        from datetime import timedelta
+        dates = []
+        current_date = self.start_date
+        for _ in range(self.total_sessions):
+            dates.append(current_date)
+            current_date += timedelta(days=self.repeat_days)
+        return dates
 
     @property
     def available_spots(self):

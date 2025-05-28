@@ -15,6 +15,25 @@
                 <strong>Телефон:</strong> {{ user.phone }}<br>
                 <strong>Дата рождения:</strong> {{ user.birth_date|date:"d.m.Y" }}
             </p>
+            
+            <!-- Добавляем информацию об абонементе -->
+            <div class="mt-3">
+                <h6>Абонемент:</h6>
+                {% if user.subscription != 'none' %}
+                    <div class="alert 
+                        {% if user.subscription == 'unlimited' %}alert-success{% endif %}
+                        {% if user.subscription == 'premium' %}alert-warning{% endif %}
+                        {% if user.subscription == 'basic' %}alert-info{% endif %}
+                        {% if user.subscription == 'single' %}alert-secondary{% endif %}">
+                        <strong>{{ user.get_subscription_display }}</strong><br>
+                        Действует до: {{ user.subscription_end|date:"d.m.Y" }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        У вас пока нет активного абонемента
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 

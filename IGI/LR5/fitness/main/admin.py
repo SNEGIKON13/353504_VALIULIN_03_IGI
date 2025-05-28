@@ -45,14 +45,14 @@ class PromoAdmin(admin.ModelAdmin):
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-    list_display = ('username', 'email', 'phone', 'birth_date', 'is_instructor')
+    list_display = ('username', 'email', 'phone', 'birth_date', 'is_instructor', 'subscription')
     search_fields = ('username', 'email', 'phone')
-    list_filter = ('is_instructor', 'is_staff')
+    list_filter = ('is_instructor', 'is_staff', 'subscription')
     fieldsets = UserAdmin.fieldsets + (
-        ('Additional Info', {'fields': ('phone', 'birth_date', 'is_instructor')}),
+        ('Additional Info', {'fields': ('phone', 'birth_date', 'is_instructor', 'subscription', 'subscription_end')}),
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
-        ('Additional Info', {'fields': ('phone', 'birth_date', 'is_instructor')}),
+        ('Additional Info', {'fields': ('phone', 'birth_date', 'is_instructor', 'subscription', 'subscription_end')}),
     )
 
 @admin.register(Gym)
