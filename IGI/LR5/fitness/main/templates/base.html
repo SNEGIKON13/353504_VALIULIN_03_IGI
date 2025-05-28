@@ -26,7 +26,9 @@
         <!-- Авторизация и личный кабинет -->
         <div>
             {% if user.is_authenticated %}
-                <a href="{% url 'main:my_classes' %}">Мои занятия</a>
+                {% if not user.is_instructor %}
+                    <a href="{% url 'main:my_classes' %}">Мои занятия</a>
+                {% endif %}
                 <a href="{% url 'main:profile' %}">Профиль</a>
                 <a href="{% url 'main:logout' %}">Выйти</a>
             {% else %}

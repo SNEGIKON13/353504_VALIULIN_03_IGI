@@ -8,17 +8,27 @@
 
     <div class="card mb-4">
         <div class="card-header">
-            <h5 class="mb-0">Мои группы</h5>
+            <h2>Мои группы</h2>
         </div>
         <div class="card-body">
             {% for group in instructor_groups %}
-                <div class="mb-3">
-                    <h6>{{ group.name }}</h6>
+                <div class="mb-4">
+                    <h3>{{ group.name }}</h3>
                     <p>
                         Зал: {{ group.gym.name }}<br>
                         Время: {{ group.start_time|time:"H:i" }} - {{ group.end_time|time:"H:i" }}<br>
                         Участников: {{ group.members.count }}/{{ group.capacity }}
                     </p>
+                    <div class="mt-2">
+                        <h4>Участники:</h4>
+                        <ul>
+                        {% for member in group.members.all %}
+                            <li>{{ member.get_full_name|default:member.username }}</li>
+                        {% empty %}
+                            <li>Нет участников</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             {% empty %}
                 <p>У вас пока нет групп</p>
@@ -28,18 +38,21 @@
 
     <div class="card">
         <div class="card-header">
-            <h5 class="mb-0">Ближайшие занятия</h5>
+            <h2>Расписание занятий на ближайшие 30 дней</h2>
         </div>
         <div class="card-body">
-            {% for session in upcoming_sessions %}
-                <div class="mb-3">
-                    <h6>{{ session.group.name }}</h6>
-                    <p>
-                        Дата: {{ session.date|date:"d.m.Y" }}<br>
-                        Время: {{ session.group.start_time|time:"H:i" }} - {{ session.group.end_time|time:"H:i" }}<br>
-                        Записано: {{ session.attendees }} чел.
-                    </p>
-                </div>
+            {% regroup upcoming_sessions by date as sessions_by_date %}
+            {% for date_group in sessions_by_date %}
+                <h3>{{ date_group.grouper|date:"d.m.Y" }}</h3>
+                {% for session in date_group.list %}
+                    <div class="mb-4">
+                        <h4>{{ session.group.name }}</h4>
+                        <p>
+                            Время: {{ session.group.start_time|time:"H:i" }} - {{ session.group.end_time|time:"H:i" }}<br>
+                            Записано: {{ session.attendees }} чел.
+                        </p>
+                    </div>
+                {% endfor %}
             {% empty %}
                 <p>Нет запланированных занятий</p>
             {% endfor %}

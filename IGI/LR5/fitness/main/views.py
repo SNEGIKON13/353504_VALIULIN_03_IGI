@@ -245,19 +245,26 @@ def profile(request):
         instructor_groups = Group.objects.filter(instructors=request.user)
         upcoming_sessions = []
         
+        # Get next 30 days of sessions
+        today = timezone.now().date()
+        thirty_days = today + timedelta(days=30)
+        
         for group in instructor_groups:
             for date in group.get_schedule_dates():
-                if date >= timezone.now().date():
+                if today <= date <= thirty_days:
                     upcoming_sessions.append({
                         'group': group,
                         'date': date,
                         'attendees': group.members.count()
                     })
         
+        # Sort sessions and remove duplicates
+        upcoming_sessions = sorted(upcoming_sessions, key=lambda x: (x['date'], x['group'].name))
+        
         context.update({
             'is_instructor': True,
-            'instructor_groups': instructor_groups,
-            'upcoming_sessions': sorted(upcoming_sessions, key=lambda x: x['date'])
+            'instructor_groups': instructor_groups.distinct(),
+            'upcoming_sessions': upcoming_sessions
         })
         return render(request, 'profile_instructor.html', context)
     else:
@@ -281,6 +288,11 @@ def my_classes(request):
 
 @login_required
 def join_group(request, group_id):
+    # Prevent instructors from enrolling
+    if request.user.is_instructor:
+        messages.error(request, 'Инструкторы не могут записываться на занятия')
+        return redirect('main:groups')
+        
     group = get_object_or_404(Group, id=group_id, is_active=True)
     
     if group.available_spots <= 0:
@@ -355,6 +367,11 @@ def my_sessions(request):
 
 @login_required
 def group_enroll(request, pk):
+    # Prevent instructors from enrolling
+    if request.user.is_instructor:
+        messages.error(request, 'Инструкторы не могут записываться на занятия')
+        return redirect('main:groups')
+        
     group = get_object_or_404(Group, pk=pk)
     
     if request.method == 'POST':
