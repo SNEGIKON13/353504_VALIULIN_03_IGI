@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Статистика{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Статистика фитнес-клуба</h1>
+
+    <!-- Основные метрики -->
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Активных клиентов</h5>
+                    <h2>{{ total_active_clients }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Общий доход</h5>
+                    <h2>{{ total_revenue }} руб.</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Посещаемость за месяц</h5>
+                    <h2>{{ attendance_rate }}%</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- График -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5>Динамика активных абонементов</h5>
+        </div>
+        <div class="card-body">
+            {% if memberships_plot %}
+                <img src="data:image/png;base64,{{ memberships_plot }}" class="img-fluid" alt="График абонементов">
+            {% else %}
+                <p class="text-muted">График временно недоступен</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

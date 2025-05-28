@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from django.db.models import Count, Sum, F, Q, Case, When, Value, FloatField, Case
+from django.db.models import Count, Sum, F, Q, Case, When, Value, FloatField, Avg
 from django.utils import timezone
 from datetime import datetime
 from .models import Article, About, FAQ, Staff, Vacancy, Review, Promo, CustomUser, Group, Membership, Attendance
@@ -17,23 +17,35 @@ import json
 import pytz
 from calendar import monthcalendar
 from datetime import datetime, timedelta
+import matplotlib
+matplotlib.use('Agg')  # Set the backend before importing pyplot
+import matplotlib.pyplot as plt
+import io
+import base64
 
 def get_random_quote():
+    default_quote = {"quote": "Мудрость приходит со временем", "author": "Народная мудрость"}
     try:
-        response = requests.get('https://zenquotes.io/api/random')
+        response = requests.get('https://zenquotes.io/api/random', timeout=3)
         if response.status_code == 200:
-            data = response.json()[0]
-            return {"quote": data['q'], "author": data['a']}
-    except:
-        return {"quote": "Мудрость приходит со временем", "author": "Народная мудрость"}
+            data = response.json()
+            if data and len(data) > 0:
+                return {"quote": data[0]['q'], "author": data[0]['a']}
+    except (requests.RequestException, KeyError, ValueError, IndexError):
+        pass
+    return default_quote
 
 def get_daily_advice():
+    default_advice = "Никогда не сдавайся!"
     try:
-        response = requests.get('https://api.adviceslip.com/advice')
+        response = requests.get('https://api.adviceslip.com/advice', timeout=3)
         if response.status_code == 200:
-            return response.json()['slip']['advice']
-    except:
-        return "Никогда не сдавайся!"
+            data = response.json()
+            if data and 'slip' in data and 'advice' in data['slip']:
+                return data['slip']['advice']
+    except (requests.RequestException, KeyError, ValueError):
+        pass
+    return default_advice
 
 def home(request): # главная со статьей
     latest_article = Article.objects.first()
@@ -43,8 +55,8 @@ def home(request): # главная со статьей
     
     # Для авторизованных пользователей добавляем цитату и совет
     if request.user.is_authenticated:
-        quote_data = get_random_quote()
-        advice = get_daily_advice()
+        quote_data = get_random_quote()  # Now guaranteed to return a valid dict
+        advice = get_daily_advice()      # Now guaranteed to return a string
         context.update({
             'quote': quote_data['quote'],
             'philosopher': quote_data['author'],
@@ -444,6 +456,83 @@ def session_delete(request, pk):
         return redirect('main:profile')
         
     return render(request, 'sessions/delete.html', {'attendance': attendance})
+
+@user_passes_test(lambda u: u.is_staff)
+def admin_statistics(request):
+    # Make sure we're using Agg backend
+    plt.switch_backend('Agg')
+    
+    # 1. Общее количество активных клиентов
+    total_active_clients = CustomUser.objects.filter(
+        is_instructor=False,
+        is_staff=False,
+        memberships__status='active'
+    ).distinct().count()
+
+    # 2. Общий доход от всех активных абонементов
+    total_revenue = Membership.objects.filter(
+        status='active'
+    ).aggregate(
+        total=Sum('group__price')
+    )['total'] or 0
+
+    # 3. Средняя посещаемость занятий (в процентах)
+    attendance_rate = Attendance.objects.filter(
+        session_date__gte=timezone.now() - timedelta(days=30)
+    ).aggregate(
+        rate=Avg(Case(
+            When(attended=True, then=100),
+            default=0,
+            output_field=FloatField(),
+        ))
+    )['rate'] or 0
+
+    try:
+        # График количества активных абонементов по месяцам
+        months = 6
+        monthly_memberships = []
+        for i in range(months):
+            date = timezone.now() - timedelta(days=30 * i)
+            count = Membership.objects.filter(
+                status='active',
+                date_joined__year=date.year,
+                date_joined__month=date.month
+            ).count()
+            monthly_memberships.append({
+                'month': date.strftime('%B %Y'),
+                'count': count
+            })
+        monthly_memberships.reverse()
+
+        # Create plot in a try block
+        plt.figure(figsize=(10, 4))
+        plt.plot(
+            [item['month'] for item in monthly_memberships],
+            [item['count'] for item in monthly_memberships],
+            marker='o'
+        )
+        plt.title('Динамика активных абонементов')
+        plt.xticks(rotation=45)
+        plt.grid(True)
+        plt.tight_layout()
+
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+        memberships_plot = base64.b64encode(buffer.getvalue()).decode()
+        plt.close()
+    except Exception as e:
+        print(f"Error creating plot: {e}")
+        memberships_plot = None
+
+    context = {
+        'total_active_clients': total_active_clients,
+        'total_revenue': total_revenue,
+        'attendance_rate': round(attendance_rate, 1),
+        'memberships_plot': memberships_plot
+    }
+
+    return render(request, 'statistics.html', context)
 
 
 

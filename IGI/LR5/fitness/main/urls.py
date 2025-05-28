@@ -5,7 +5,7 @@ app_name = 'main'
 
 urlpatterns = [
     # Основные страницы
-    path('', views.home, name='home'),
+    path('', views.home, name='home'),  # пустой путь для главной страницы
     path('news/', views.news, name='news'),
     path('about/', views.about, name='about'),
     path('faq/', views.faq, name='faq'),
@@ -15,6 +15,7 @@ urlpatterns = [
     path('privacy/', views.privacy_policy, name='privacy_policy'),
     path('vacancies/', views.vacancies, name='vacancies'),
     path('promos/', views.promos, name='promos'),  # Добавляем маршрут для промо-акций
+    path('statistics/', views.admin_statistics, name='admin_statistics'),  # Добавлен маршрут для админ. статистики
 
     # Аутентификация
     path('register/', views.register_view, name='register'),

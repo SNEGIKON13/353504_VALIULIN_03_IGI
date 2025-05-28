@@ -11,7 +11,7 @@
 <body>
     <div class="nav">        <!-- Основная навигация -->
         <div>
-            <a href="{% url 'main:home' %}">Главная</a>
+            <a href="/">Главная</a>
             <a href="{% url 'main:news' %}">Новости</a>
             <a href="{% url 'main:about' %}">О компании</a>
             <a href="{% url 'main:groups' %}">Группы</a>
@@ -26,10 +26,13 @@
         <!-- Авторизация и личный кабинет -->
         <div>
             {% if user.is_authenticated %}
-                {% if not user.is_instructor %}
+                {% if user.is_staff %}
+                    <a href="{% url 'admin:index' %}">Админ-панель</a>
+                    <a href="{% url 'main:admin_statistics' %}">Статистика</a>
+                {% elif not user.is_instructor %}
                     <a href="{% url 'main:my_classes' %}">Мои занятия</a>
+                    <a href="{% url 'main:profile' %}">Профиль</a>
                 {% endif %}
-                <a href="{% url 'main:profile' %}">Профиль</a>
                 <a href="{% url 'main:logout' %}">Выйти</a>
             {% else %}
                 <a href="{% url 'main:login' %}">Войти</a>
