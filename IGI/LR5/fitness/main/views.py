@@ -239,7 +239,7 @@ def groups(request, year=None, month=None, min_price=None, max_price=None, min_d
     
     # Получаем текущее время в UTC
     now = timezone.now()
-    local_tz = pytz.timezone('Europe/Minsk')
+    local_tz = pytz.timezone('Europe/Kaliningrad')  # UTC+2
     local_time = now.astimezone(local_tz)
     
     # Подготавливаем данные для календаря
@@ -297,11 +297,18 @@ def groups(request, year=None, month=None, min_price=None, max_price=None, min_d
         group.local_updated = group.updated_at.astimezone(user_tz).strftime("%d/%m/%Y %H:%M")
         group.utc_updated = group.updated_at.astimezone(utc_tz).strftime("%d/%m/%Y %H:%M")
 
+    # Добавляем форматирование дат в DD/MM/YYYY для calendar_data
+    for date in calendar_data:
+        for session in calendar_data[date]:
+            session['date_formatted'] = date.strftime("%d/%m/%Y")
+            session['start_time'] = session['start_time'].strftime("%H:%M")
+            session['end_time'] = session['end_time'].strftime("%H:%M")
+    
     context = {
         'groups': groups_list,
         'current_sort': sort_by,
         'calendar_data': calendar_data,
-        'current_time': local_time,
+        'current_time': local_time.strftime("%d/%m/%Y %H:%M"),
         'calendar_weeks': calendar_weeks,
         'api_requests_remaining': api_requests_remaining,
         'user_timezone': user_timezone,

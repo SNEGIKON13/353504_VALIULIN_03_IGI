@@ -133,7 +133,7 @@
                     <tbody>
                         {% for date, sessions in calendar_data.items %}
                         <tr>
-                            <td>{{ date|date:"d.m.Y" }}</td>
+                            <td>{{ date|date:"d/m/Y" }}</td>
                             <td>
                                 {% for session in sessions %}
                                 <div class="mb-1">
@@ -163,7 +163,7 @@
                             <li><strong>Стоимость:</strong> {{ group.price }} руб.</li>
                             <li><strong>Длительность:</strong> {{ group.duration }} минут</li>
                             <li><strong>Свободных мест:</strong> {{ group.available_spots }}</li>
-                            <li><strong>Дата начала:</strong> {{ group.start_date }}</li>
+                            <li><strong>Дата начала:</strong> {{ group.start_date|date:"d/m/Y" }}</li>
                         </ul>
                     </div>
                     <div class="card-footer">
