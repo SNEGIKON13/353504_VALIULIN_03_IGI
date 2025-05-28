@@ -193,7 +193,8 @@ class Group(models.Model):
     instructors = models.ManyToManyField(CustomUser, related_name='instructor_groups', 
                                        limit_choices_to={'is_instructor': True}, 
                                        verbose_name="Инструкторы")
-    members = models.ManyToManyField(CustomUser, related_name='member_groups', 
+    members = models.ManyToManyField(CustomUser, through='Membership',
+                                   related_name='member_groups', 
                                    verbose_name="Участники")
     gym = models.ForeignKey(Gym, on_delete=models.SET_NULL, null=True, 
                            verbose_name="Зал")
@@ -229,12 +230,20 @@ class Group(models.Model):
 
     def get_schedule_dates(self):
         from datetime import timedelta
+        from django.utils import timezone
+        
+        today = timezone.now().date()
         dates = []
         current_date = self.start_date
+        
+        # Get all dates
         for _ in range(self.total_sessions):
-            dates.append(current_date)
+            if current_date >= today:  # Only include future dates
+                dates.append(current_date)
             current_date += timedelta(days=self.repeat_days)
-        return dates
+        
+        # Return only the next upcoming date if exists
+        return dates[:1] if dates else []
 
     @property
     def available_spots(self):

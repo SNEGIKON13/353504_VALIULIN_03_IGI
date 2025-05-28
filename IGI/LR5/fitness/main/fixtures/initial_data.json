@@ -1,0 +1,189 @@
+[
+  {
+    "model": "main.gym",
+    "pk": 1,
+    "fields": {
+      "name": "Главный тренажерный зал",
+      "description": "Просторный зал с современным оборудованием для силовых тренировок",
+      "capacity": 50
+    }
+  },
+  {
+    "model": "main.gym",
+    "pk": 2,
+    "fields": {
+      "name": "Зал групповых занятий",
+      "description": "Зал с зеркалами и свободным пространством для групповых тренировок", 
+      "capacity": 20
+    }
+  },
+  {
+    "model": "main.gym",
+    "pk": 3,
+    "fields": {
+      "name": "Зал йоги",
+      "description": "Уютный зал для практики йоги и медитации",
+      "capacity": 15
+    }
+  },
+  {
+    "model": "main.equipment",
+    "pk": 1,
+    "fields": {
+      "name": "Беговая дорожка",
+      "description": "Профессиональная беговая дорожка с электронным управлением",
+      "gym": 1,
+      "quantity": 5
+    }
+  },
+  {
+    "model": "main.equipment",
+    "pk": 2,
+    "fields": {
+      "name": "Гантели (набор)",
+      "description": "Набор гантелей от 1 до 20 кг",
+      "gym": 1,
+      "quantity": 10
+    }
+  },
+  {
+    "model": "main.equipment",
+    "pk": 3,
+    "fields": {
+      "name": "Коврики для йоги",
+      "description": "Профессиональные коврики для йоги",
+      "gym": 2,
+      "quantity": 20
+    }
+  },
+  {
+    "model": "main.equipment",
+    "pk": 4,
+    "fields": {
+      "name": "Силовая рама",
+      "description": "Многофункциональная силовая рама со штангами",
+      "gym": 1,
+      "quantity": 2
+    }
+  },
+  {
+    "model": "main.group",
+    "pk": 1,
+    "fields": {
+      "name": "Йога для начинающих",
+      "description": "Базовые асаны и дыхательные техники для начинающих",
+      "price": "50.00",
+      "duration": 60,
+      "gym": 2,
+      "capacity": 15,
+      "start_date": "2025-06-01",
+      "start_time": "10:00",
+      "end_time": "11:00",
+      "repeat_days": 7,
+      "total_sessions": 12,
+      "is_active": true,
+      "created_at": "2025-05-28T09:00:00Z",
+      "updated_at": "2025-05-28T09:00:00Z"
+    }
+  },
+  {
+    "model": "main.group",
+    "pk": 2,
+    "fields": {
+      "name": "Силовые тренировки",
+      "description": "Интенсивные силовые тренировки для всех групп мышц",
+      "price": "65.00",
+      "duration": 90,
+      "gym": 1,
+      "capacity": 12,
+      "start_date": "2025-06-01",
+      "start_time": "18:00",
+      "end_time": "19:30",
+      "repeat_days": 2,
+      "total_sessions": 16,
+      "is_active": true,
+      "created_at": "2025-05-28T09:00:00Z",
+      "updated_at": "2025-05-28T09:00:00Z"
+    }
+  },
+  {
+    "model": "main.group",
+    "pk": 3,
+    "fields": {
+      "name": "Пилатес",
+      "description": "Упражнения для укрепления мышц корпуса и развития гибкости",
+      "price": "55.00",
+      "duration": 75,
+      "gym": 2,
+      "capacity": 10,
+      "start_date": "2025-06-01",
+      "start_time": "15:00",
+      "end_time": "16:15",
+      "repeat_days": 7,
+      "total_sessions": 8,
+      "is_active": true,
+      "created_at": "2025-05-28T09:00:00Z",
+      "updated_at": "2025-05-28T09:00:00Z"
+    }
+  },
+  {
+    "model": "main.group",
+    "pk": 4,
+    "fields": {
+      "name": "Функциональный тренинг",
+      "description": "Комплексные тренировки для всего тела с использованием различного оборудования",
+      "price": "70.00",
+      "duration": 75,
+      "gym": 1,
+      "capacity": 15,
+      "start_date": "2025-06-01",
+      "start_time": "19:30",
+      "end_time": "20:45",
+      "repeat_days": 2,
+      "total_sessions": 12,
+      "is_active": true,
+      "created_at": "2025-05-28T09:00:00Z",
+      "updated_at": "2025-05-28T09:00:00Z"
+    }
+  },
+  {
+    "model": "main.group",
+    "pk": 5,
+    "fields": {
+      "name": "Продвинутая йога",
+      "description": "Сложные асаны и медитативные практики для опытных",
+      "price": "75.00",
+      "duration": 90,
+      "gym": 3,
+      "capacity": 12,
+      "start_date": "2025-06-01",
+      "start_time": "08:00",
+      "end_time": "09:30",
+      "repeat_days": 3,
+      "total_sessions": 16,
+      "is_active": true,
+      "created_at": "2025-05-28T09:00:00Z",
+      "updated_at": "2025-05-28T09:00:00Z"
+    }
+  },
+  {
+    "model": "main.group",
+    "pk": 6,
+    "fields": {
+      "name": "Стретчинг",
+      "description": "Комплекс упражнений для развития гибкости и подвижности",
+      "price": "45.00",
+      "duration": 60,
+      "gym": 2,
+      "capacity": 20,
+      "start_date": "2025-06-01",
+      "start_time": "17:00",
+      "end_time": "18:00",
+      "repeat_days": 2,
+      "total_sessions": 12,
+      "is_active": true,
+      "created_at": "2025-05-28T09:00:00Z",
+      "updated_at": "2025-05-28T09:00:00Z"
+    }
+  }
+]

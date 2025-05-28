@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 app_name = 'main'
@@ -47,4 +47,10 @@ urlpatterns = [
     path('sessions/<int:pk>/edit/', views.session_edit, name='session_edit'),
     path('sessions/<int:pk>/delete/', views.session_delete, name='session_delete'),
 
+    # Примеры с регулярными выражениями
+    re_path(r'^groups/(?P<year>\d{4})/(?P<month>\d{2})/$', views.groups, name='groups_by_date'),
+    re_path(r'^groups/price/(?P<min_price>\d+)-(?P<max_price>\d+)/$', views.groups, name='groups_by_price'),
+    re_path(r'^groups/duration/(?P<min_duration>\d+)-(?P<max_duration>\d+)/$', views.groups, name='groups_by_duration'),
+    re_path(r'^instructor/(?P<username>[\w.@+-]+)/$', views.instructor_profile, name='instructor_profile'),
+    re_path(r'^reviews/rating/(?P<rating>[1-5])/$', views.reviews_by_rating, name='reviews_by_rating'),
 ]

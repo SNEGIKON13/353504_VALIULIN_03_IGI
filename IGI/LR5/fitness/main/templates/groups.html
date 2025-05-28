@@ -32,6 +32,20 @@
 
 <div class="container mt-4">
     <h1>Наши группы</h1>
+
+    <!-- Добавляем информацию об API ограничениях -->
+    {% if not user.is_authenticated %}
+    <div class="alert alert-warning">
+        Для неавторизованных пользователей действует ограничение: 100 запросов в час.
+        <a href="{% url 'main:login' %}" class="alert-link">Войдите</a> для снятия ограничений.
+    </div>
+    {% endif %}
+
+    {% if api_requests_remaining %}
+    <div class="alert alert-info">
+        Осталось запросов в этом часу: {{ api_requests_remaining }}
+    </div>
+    {% endif %}
     
     <div class="alert alert-info">
         Текущее время: {{ current_time|date:"d.m.Y H:i" }}
@@ -80,14 +94,27 @@
     </div>
 
     <div class="mb-4">
-        <label for="sort">Сортировать по:</label>
-        <select id="sort" class="form-select" onchange="window.location.href='?sort=' + this.value">
-            <option value="">Без сортировки</option>
-            <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Цена (по возрастанию)</option>
-            <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Цена (по убыванию)</option>
-            <option value="duration_asc" {% if current_sort == 'duration_asc' %}selected{% endif %}>Длительность (по возрастанию)</option>
-            <option value="duration_desc" {% if current_sort == 'duration_desc' %}selected{% endif %}>Длительность (по убыванию)</option>
-        </select>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="sort">Сортировать по:</label>
+                <select id="sort" class="form-select" onchange="window.location.href='?sort=' + this.value">
+                    <option value="">Без сортировки</option>
+                    <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Цена (по возрастанию)</option>
+                    <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Цена (по убыванию)</option>
+                    <option value="duration_asc" {% if current_sort == 'duration_asc' %}selected{% endif %}>Длительность (по возрастанию)</option>
+                    <option value="duration_desc" {% if current_sort == 'duration_desc' %}selected{% endif %}>Длительность (по убыванию)</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label>Фильтр по цене:</label>
+                <form class="d-flex gap-2" action="{% url 'main:groups_by_price' min_price=0 max_price=0 %}" 
+                      onsubmit="return submitPriceFilter(this);">
+                    <input type="number" name="min_price" class="form-control" placeholder="От" required>
+                    <input type="number" name="max_price" class="form-control" placeholder="До" required>
+                    <button type="submit" class="btn btn-primary">Найти</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <div class="row mb-4">
@@ -138,7 +165,7 @@
                         </ul>
                     </div>
                     <div class="card-footer">
-                        {% if not user.is_instructor %}
+                        {% if not user.is_instructor and not user.is_staff %}
                             {% if group.available_spots > 0 and user.is_authenticated %}
                                 <form method="post" action="{% url 'main:group_enroll' group.id %}">
                                     {% csrf_token %}
@@ -160,4 +187,16 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+function submitPriceFilter(form) {
+    const minPrice = form.min_price.value;
+    const maxPrice = form.max_price.value;
+    if (minPrice && maxPrice) {
+        window.location.href = `/groups/price/${minPrice}-${maxPrice}/`;
+        return false;
+    }
+    return false;
+}
+</script>
 {% endblock %}

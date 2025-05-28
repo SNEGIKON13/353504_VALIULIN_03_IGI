@@ -71,7 +71,7 @@ class GroupAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'duration', 'capacity', 'start_date', 'start_time', 'is_active')
     list_filter = ('is_active', 'start_date')
     search_fields = ('name', 'description')
-    filter_horizontal = ('instructors', 'members')
+    filter_horizontal = ('instructors',)  # Removed 'members' here
 
 @admin.register(Membership)
 class MembershipAdmin(admin.ModelAdmin):

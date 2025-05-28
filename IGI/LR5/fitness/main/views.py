@@ -1,3 +1,4 @@
+from functools import cache
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -11,7 +12,7 @@ from .forms import CustomUserCreationForm
 import requests
 from django.utils import timezone
 from django.db.models import Sum, Count, Avg, F, Q
-from django.db.models.functions import ExtractMonth
+from django.db.models.functions import ExtractMonth, ExtractYear
 from datetime import timedelta
 import json
 import pytz
@@ -22,6 +23,9 @@ matplotlib.use('Agg')  # Set the backend before importing pyplot
 import matplotlib.pyplot as plt
 import io
 import base64
+from .decorators import api_auth_required, api_rate_limit
+from django.core.cache import cache
+from statistics import StatisticsError, mode
 
 def get_random_quote():
     default_quote = {"quote": "Мудрость приходит со временем", "author": "Народная мудрость"}
@@ -88,10 +92,17 @@ def vacancies(request): # вакансии
     vacancies_list = Vacancy.objects.filter(is_active=True)
     return render(request, 'vacancies.html', {'vacancies': vacancies_list})
 
+@api_auth_required
+@api_rate_limit(calls=100, period=3600)
 @login_required
 def reviews(request): # отзывы
     reviews_list = Review.objects.all()
+    
     if request.method == 'POST' and request.user.is_authenticated:
+        if request.user.is_staff:
+            messages.error(request, 'Администраторы не могут оставлять отзывы')
+            return redirect('main:reviews')
+            
         Review.objects.create(
             name=request.user.get_full_name() or request.user.username,
             rating=request.POST.get('rating'),
@@ -103,6 +114,8 @@ def reviews(request): # отзывы
         'reviews': reviews_list
     })
 
+@api_auth_required
+@api_rate_limit(calls=50, period=3600)
 def promos(request): # промокоды
     active_promos = Promo.objects.filter(
         is_active=True,
@@ -185,9 +198,26 @@ def logout_view(request):
     logout(request)
     return redirect('main:home')
 
-def groups(request):
+@api_auth_required
+@api_rate_limit(calls=100, period=3600)
+def groups(request, year=None, month=None, min_price=None, max_price=None, min_duration=None, max_duration=None):
+    # Поскольку декоратор уже проверяет аутентификацию, 
+    # мы можем быть уверены что request.user существует
     groups_list = Group.objects.filter(is_active=True)
     
+    # Фильтрация по дате
+    if year and month:
+        groups_list = groups_list.filter(start_date__year=year, start_date__month=month)
+    
+    # Фильтрация по цене
+    if min_price and max_price:
+        groups_list = groups_list.filter(price__range=(min_price, max_price))
+        
+    # Фильтрация по длительности
+    if min_duration and max_duration:
+        groups_list = groups_list.filter(duration__range=(min_duration, max_duration))
+    
+    # Остальной код view остается без изменений
     # Сортировка
     sort_by = request.GET.get('sort')
     if sort_by == 'price_asc':
@@ -198,6 +228,14 @@ def groups(request):
         groups_list = groups_list.order_by('duration')
     elif sort_by == 'duration_desc':
         groups_list = groups_list.order_by('-duration')
+    
+    # Подсчет оставшихся запросов (без ошибки, только для неавторизованных)
+    api_requests_remaining = None
+    if not request.user.is_authenticated:
+        client_ip = request.META.get('REMOTE_ADDR')
+        cache_key = f"ratelimit_{client_ip}"
+        calls_history = cache.get(cache_key, [])
+        api_requests_remaining = 100 - len(calls_history)
     
     # Получаем текущее время в UTC
     now = timezone.now()
@@ -216,6 +254,9 @@ def groups(request):
                 'end_time': group.end_time,
                 'available_spots': group.available_spots
             })
+    
+    # Сортируем данные календаря по дате
+    calendar_data = dict(sorted(calendar_data.items()))
     
     # Подготовка календаря
     today = timezone.now().date()
@@ -240,16 +281,22 @@ def groups(request):
                 week_data.append(({"day": 0, "date": None}, []))
         calendar_weeks.append(week_data)
     
-    return render(request, 'groups.html', {
+    context = {
         'groups': groups_list,
         'current_sort': sort_by,
         'calendar_data': calendar_data,
         'current_time': local_time,
         'calendar_weeks': calendar_weeks,
-    })
+        'api_requests_remaining': api_requests_remaining,
+    }
+    
+    return render(request, 'groups.html', context)
 
 @login_required
 def profile(request):
+    if request.user.is_staff:
+        return redirect('admin:index')  # Перенаправляем админа в админку
+    
     context = {'user': request.user}
     
     if request.user.is_instructor:
@@ -457,82 +504,163 @@ def session_delete(request, pk):
         
     return render(request, 'sessions/delete.html', {'attendance': attendance})
 
-@user_passes_test(lambda u: u.is_staff)
+def is_regular_user(user):
+    return user.is_authenticated and not user.is_staff and not user.is_instructor
+
+def is_instructor(user):
+    return user.is_authenticated and user.is_instructor
+
+def is_admin(user):
+    return user.is_authenticated and user.is_staff
+
+@user_passes_test(is_admin)
 def admin_statistics(request):
-    # Make sure we're using Agg backend
-    plt.switch_backend('Agg')
+    # Get filter parameters and set defaults
+    selected_group = request.GET.get('group')
+    start_date = request.GET.get('start_date') or (timezone.now() - timedelta(days=30)).strftime('%Y-%m-%d')
+    end_date = request.GET.get('end_date') or timezone.now().strftime('%Y-%m-%d')
     
-    # 1. Общее количество активных клиентов
-    total_active_clients = CustomUser.objects.filter(
-        is_instructor=False,
-        is_staff=False,
-        memberships__status='active'
-    ).distinct().count()
+    # Base queries
+    clients = CustomUser.objects.filter(is_instructor=False, is_staff=False).order_by('username')
+    groups = Group.objects.all()
+    
+    # Memberships with date filter
+    memberships = Membership.objects.filter(
+        date_joined__date__range=(start_date, end_date)
+    )
+    if selected_group:
+        memberships = memberships.filter(group_id=selected_group)
 
-    # 2. Общий доход от всех активных абонементов
-    total_revenue = Membership.objects.filter(
-        status='active'
-    ).aggregate(
-        total=Sum('group__price')
-    )['total'] or 0
+    # Total revenue and active clients
+    total_revenue = memberships.aggregate(total=Sum('group__price'))['total'] or 0
+    total_active_clients = clients.filter(memberships__status='active').distinct().count()
 
-    # 3. Средняя посещаемость занятий (в процентах)
-    attendance_rate = Attendance.objects.filter(
-        session_date__gte=timezone.now() - timedelta(days=30)
-    ).aggregate(
-        rate=Avg(Case(
-            When(attended=True, then=100),
-            default=0,
-            output_field=FloatField(),
-        ))
-    )['rate'] or 0
+    # Client statistics with spending
+    clients_with_stats = clients.annotate(
+        total_spent=Sum('memberships__group__price'),
+        groups_count=Count('memberships', distinct=True)
+    ).order_by('username')
 
+    # Calculate spending statistics
+    all_spendings = [c.total_spent or 0 for c in clients_with_stats]
+    spending_stats = {
+        'avg': sum(all_spendings) / len(all_spendings) if all_spendings else 0,
+        'median': sorted(all_spendings)[len(all_spendings)//2] if all_spendings else 0
+    }
     try:
-        # График количества активных абонементов по месяцам
-        months = 6
-        monthly_memberships = []
-        for i in range(months):
-            date = timezone.now() - timedelta(days=30 * i)
-            count = Membership.objects.filter(
-                status='active',
-                date_joined__year=date.year,
-                date_joined__month=date.month
-            ).count()
-            monthly_memberships.append({
-                'month': date.strftime('%B %Y'),
-                'count': count
-            })
-        monthly_memberships.reverse()
+        spending_stats['mode'] = mode(all_spendings)
+    except StatisticsError:
+        spending_stats['mode'] = all_spendings[0] if all_spendings else 0
 
-        # Create plot in a try block
-        plt.figure(figsize=(10, 4))
-        plt.plot(
-            [item['month'] for item in monthly_memberships],
-            [item['count'] for item in monthly_memberships],
-            marker='o'
-        )
-        plt.title('Динамика активных абонементов')
-        plt.xticks(rotation=45)
-        plt.grid(True)
-        plt.tight_layout()
-
-        buffer = io.BytesIO()
-        plt.savefig(buffer, format='png')
-        buffer.seek(0)
-        memberships_plot = base64.b64encode(buffer.getvalue()).decode()
-        plt.close()
-    except Exception as e:
-        print(f"Error creating plot: {e}")
-        memberships_plot = None
-
-    context = {
-        'total_active_clients': total_active_clients,
-        'total_revenue': total_revenue,
-        'attendance_rate': round(attendance_rate, 1),
-        'memberships_plot': memberships_plot
+    # Age statistics
+    ages = [c.age() for c in clients if c.age()]
+    age_stats = {
+        'avg': sum(ages) / len(ages) if ages else 0,
+        'median': sorted(ages)[len(ages)//2] if ages else 0
     }
 
-    return render(request, 'statistics.html', context)
+    # Group statistics
+    groups_stats = []
+    for group in groups:
+        group_data = {
+            'name': group.name,
+            'member_count': group.members.count(),
+            'revenue': group.price * group.members.count(),
+            'sessions': Attendance.objects.filter(
+                group=group,
+                session_date__range=(start_date, end_date)
+            ).count()
+        }
+        groups_stats.append(group_data)
+
+    # Sort groups by revenue for plot
+    groups_stats.sort(key=lambda x: x['revenue'], reverse=True)
+    
+    # Create revenue plot
+    plt.figure(figsize=(12, 6))
+    plt.bar(
+        [g['name'] for g in groups_stats[:10]],
+        [float(g['revenue']) for g in groups_stats[:10]]
+    )
+    plt.xticks(rotation=45, ha='right')
+    plt.title('Топ-10 групп по доходности')
+    plt.ylabel('Доход (руб.)')
+    plt.tight_layout()
+
+    # Save plot
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    revenue_plot = base64.b64encode(buffer.getvalue()).decode()
+    plt.close()
+
+    # Calculate attendance rate
+    total_sessions = Attendance.objects.filter(
+        session_date__range=(start_date, end_date)
+    ).count()
+    attended_sessions = Attendance.objects.filter(
+        session_date__range=(start_date, end_date),
+        attended=True
+    ).count()
+    attendance_rate = (attended_sessions / total_sessions * 100) if total_sessions > 0 else 0
+
+    context = {
+        'clients': clients_with_stats,
+        'total_revenue': total_revenue,
+        'total_active_clients': total_active_clients,
+        'attendance_rate': round(attendance_rate, 1),
+        'spending_stats': spending_stats,
+        'age_stats': age_stats,
+        'groups_stats': groups_stats[:10],  # Top 10 groups
+        'revenue_plot': revenue_plot,
+        'selected_group': selected_group,
+        'start_date': start_date,
+        'end_date': end_date,
+        'groups': groups
+    }
+
+    return render(request, 'admin/statistics.html', context)
+
+def instructor_profile(request, username):
+    """View for displaying instructor's profile and their groups"""
+    instructor = get_object_or_404(CustomUser, username=username, is_instructor=True)
+    
+    # Get instructor's groups
+    groups = Group.objects.filter(instructors=instructor, is_active=True)
+    
+    # Get upcoming sessions for next 30 days
+    today = timezone.now().date()
+    thirty_days = today + timedelta(days=30)
+    
+    upcoming_sessions = []
+    for group in groups:
+        for date in group.get_schedule_dates():
+            if today <= date <= thirty_days:
+                upcoming_sessions.append({
+                    'group': group,
+                    'date': date,
+                    'attendees': group.members.count()
+                })
+    
+    # Sort sessions by date
+    upcoming_sessions.sort(key=lambda x: x['date'])
+    
+    context = {
+        'instructor': instructor,
+        'groups': groups,
+        'upcoming_sessions': upcoming_sessions
+    }
+    
+    return render(request, 'instructor_profile.html', context)
+
+def reviews_by_rating(request, rating):
+    """View for filtering reviews by rating"""
+    rating = int(rating)  # Convert string to integer
+    reviews_list = Review.objects.filter(rating=rating)
+    return render(request, 'reviews.html', {
+        'reviews': reviews_list,
+        'current_rating': rating
+    })
 
 
 

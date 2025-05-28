@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Статистика{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Статистика фитнес-клуба</h1>
+
+    <!-- Фильтры -->
+    <div class="card mb-4">
+        <div class="card-header">Фильтры</div>
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-4">
+                    <select name="group" class="form-select">
+                        <option value="">Все группы</option>
+                        {% for group in groups %}
+                        <option value="{{ group.id }}" {% if group.id|stringformat:"s" == selected_group %}selected{% endif %}>
+                            {{ group.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="date" name="start_date" value="{{ start_date }}" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <input type="date" name="end_date" value="{{ end_date }}" class="form-control">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary">Применить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Основные показатели -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Активных клиентов</h5>
+                    <h2>{{ total_active_clients }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Общий доход</h5>
+                    <h2>{{ total_revenue }} руб.</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Посещаемость за месяц</h5>
+                    <h2>{{ attendance_rate }}%</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Статистика по клиентам -->
+    <div class="card mb-4">
+        <div class="card-header">Статистика по клиентам</div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h6>Статистика по возрасту:</h6>
+                    <ul>
+                        <li>Средний возраст: {{ age_stats.avg|floatformat:1 }} лет</li>
+                        <li>Медианный возраст: {{ age_stats.median }} лет</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6>Статистика по расходам:</h6>
+                    <ul>
+                        <li>Средние расходы: {{ spending_stats.avg|floatformat:2 }} руб.</li>
+                        <li>Медиана расходов: {{ spending_stats.median }} руб.</li>
+                        <li>Мода расходов: {{ spending_stats.mode }} руб.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h6>Список клиентов:</h6>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Клиент</th>
+                            <th>Возраст</th>
+                            <th>Общие расходы</th>
+                            <th>Кол-во групп</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for client in clients %}
+                        <tr>
+                            <td>{{ client.get_full_name|default:client.username }}</td>
+                            <td>{{ client.age }}</td>
+                            <td>{{ client.total_spent|default:0 }} руб.</td>
+                            <td>{{ client.groups_count }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Статистика по группам -->
+    <div class="card mb-4">
+        <div class="card-header">Статистика по группам</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Группа</th>
+                            <th>Участников</th>
+                            <th>Доход</th>
+                            <th>Занятий за период</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for group in groups_stats %}
+                        <tr>
+                            <td>{{ group.name }}</td>
+                            <td>{{ group.member_count }}</td>
+                            <td>{{ group.revenue }} руб.</td>
+                            <td>{{ group.sessions }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- График доходности -->
+    <div class="card mb-4">
+        <div class="card-header">График доходности групп</div>
+        <div class="card-body">
+            <img src="data:image/png;base64,{{ revenue_plot }}" class="img-fluid" alt="График доходности">
+        </div>
+    </div>
+</div>
+{% endblock %}

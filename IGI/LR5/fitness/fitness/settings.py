@@ -147,3 +147,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #         'rest_framework.authentication.BasicAuthentication',
 #     ],
 # }
+
+# Cache settings
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
+
+# API Rate limiting
+API_RATE_LIMIT = {
+    'DEFAULT_CALLS': 100,
+    'DEFAULT_PERIOD': 3600  # 1 hour in seconds
+}

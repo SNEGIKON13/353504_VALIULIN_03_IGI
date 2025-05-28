@@ -35,17 +35,80 @@
         </div>
     </div>
 
-    <!-- График -->
-    <div class="card mt-4">
+    <!-- Статистика по клиентам -->
+    <div class="card mb-4">
         <div class="card-header">
-            <h5>Динамика активных абонементов</h5>
+            <h5>Статистика по клиентам</h5>
         </div>
         <div class="card-body">
-            {% if memberships_plot %}
-                <img src="data:image/png;base64,{{ memberships_plot }}" class="img-fluid" alt="График абонементов">
-            {% else %}
-                <p class="text-muted">График временно недоступен</p>
-            {% endif %}
+            <h6>Средние показатели:</h6>
+            <p>
+                Средний возраст: {{ age_stats.avg_age|floatformat:1 }} лет<br>
+                Средние расходы: {{ spending_stats.avg_spending|floatformat:2 }} руб.
+            </p>
+            
+            <h6>Список клиентов:</h6>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Клиент</th>
+                            <th>Возраст</th>
+                            <th>Общие расходы</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for client in clients %}
+                        <tr>
+                            <td>{{ client.get_full_name }}</td>
+                            <td>{{ client.age }}</td>
+                            <td>{{ client.total_spent|default:0 }} руб.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Статистика по группам -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Популярные группы</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Группа</th>
+                            <th>Количество участников</th>
+                            <th>Общий доход</th>
+                            <th>Занятий за месяц</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for group in popular_groups %}
+                        <tr>
+                            <td>{{ group.name }}</td>
+                            <td>{{ group.member_count }}</td>
+                            <td>{{ group.total_revenue }} руб.</td>
+                            <td>{{ group.sessions_count }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- График прибыльности -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>График прибыльности групп</h5>
+        </div>
+        <div class="card-body">
+            <img src="data:image/png;base64,{{ revenue_plot }}" class="img-fluid" alt="График прибыльности">
         </div>
     </div>
 </div>

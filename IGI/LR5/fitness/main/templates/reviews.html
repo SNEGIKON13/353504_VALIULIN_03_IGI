@@ -7,36 +7,42 @@
     <h1>Отзывы клиентов</h1>
     
     {% if user.is_authenticated %}
-        <div style="margin-bottom: 20px;">
-            <form method="post">
-                {% csrf_token %}
-                <div style="margin-bottom: 15px;">
-                    <label for="rating">Оценка:</label>
-                    <select name="rating" id="rating" required>
-                        <option value="5">5 звезд</option>
-                        <option value="4">4 звезды</option>
-                        <option value="3">3 звезды</option>
-                        <option value="2">2 звезды</option>
-                        <option value="1">1 звезда</option>
-                    </select>
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label for="text">Ваш отзыв:</label>
-                    <textarea name="text" id="text" rows="4" required></textarea>
-                </div>
-                <button type="submit">Отправить отзыв</button>
-            </form>
-        </div>
+        {% if not user.is_staff %}
+            <div style="margin-bottom: 20px;">
+                <form method="post">
+                    {% csrf_token %}
+                    <div style="margin-bottom: 15px;">
+                        <label for="rating">Оценка:</label>
+                        <select name="rating" id="rating" required>
+                            <option value="5">5 звезд</option>
+                            <option value="4">4 звезды</option>
+                            <option value="3">3 звезды</option>
+                            <option value="2">2 звезды</option>
+                            <option value="1">1 звезда</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label for="text">Ваш отзыв:</label>
+                        <textarea name="text" id="text" rows="4" required></textarea>
+                    </div>
+                    <button type="submit">Отправить отзыв</button>
+                </form>
+            </div>
 
-        {% if user_reviews %}
-            <h2>Ваши отзывы</h2>
-            {% for review in user_reviews %}
-                <div class="quote-box">
-                    <p>Оценка: {% for i in ""|ljust:review.rating %}★{% endfor %}</p>
-                    <p>{{ review.text }}</p>
-                    <small>{{ review.created_at|date:"d.m.Y" }}</small>
-                </div>
-            {% endfor %}
+            {% if user_reviews %}
+                <h2>Ваши отзывы</h2>
+                {% for review in user_reviews %}
+                    <div class="quote-box">
+                        <p>Оценка: {% for i in ""|ljust:review.rating %}★{% endfor %}</p>
+                        <p>{{ review.text }}</p>
+                        <small>{{ review.created_at|date:"d.m.Y" }}</small>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% else %}
+            <div class="alert alert-info">
+                Администраторы не могут оставлять отзывы.
+            </div>
         {% endif %}
     {% else %}
         <div style="margin-bottom: 20px;">
