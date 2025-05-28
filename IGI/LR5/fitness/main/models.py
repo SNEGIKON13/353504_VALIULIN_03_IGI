@@ -3,6 +3,9 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, RegexValidator
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+import logging
+
+logger = logging.getLogger(__name__)
 
 class CustomUser(AbstractUser):
     phone_regex = RegexValidator(
@@ -242,45 +245,23 @@ class Group(models.Model):
 
     def clean(self):
         if not self.gym:
+            logger.error(f"Attempted to create group without gym assignment")
             raise ValidationError("Необходимо указать зал для занятий")
         
         if self.capacity > self.gym.capacity:
+            logger.warning(f"Attempted to set group capacity {self.capacity} greater than gym capacity {self.gym.capacity}")
             raise ValidationError(f"Количество участников не может превышать вместимость зала ({self.gym.capacity} человек)")
         
         if self.start_time >= self.end_time:
+            logger.error(f"Invalid time range: {self.start_time} - {self.end_time}")
             raise ValidationError("Время начала должно быть раньше времени окончания")
 
-    def get_schedule_dates(self):
-        from datetime import timedelta
-        from django.utils import timezone
-        
-        today = timezone.now().date()
-        dates = []
-        current_date = self.start_date
-        
-        # Get all dates
-        for _ in range(self.total_sessions):
-            if current_date >= today:  # Only include future dates
-                dates.append(current_date)
-            current_date += timedelta(days=self.repeat_days)
-        
-        # Return only the next upcoming date if exists
-        return dates[:1] if dates else []
-
-    def get_all_session_dates(self):
-        """Return all session dates without filtering by today's date"""
-        from datetime import timedelta
-        dates = []
-        current_date = self.start_date
-        for _ in range(self.total_sessions):
-            dates.append(current_date)
-            current_date += timedelta(days=self.repeat_days)
-        return dates
-
-    @property
-    def available_spots(self):
-        """Return number of available spots in the group"""
-        return self.capacity - self.members.count()
+    def save(self, *args, **kwargs):
+        if not self.pk:  # New instance
+            logger.info(f"Creating new group: {self.name}")
+        else:
+            logger.info(f"Updating group: {self.name} (ID: {self.pk})")
+        super().save(*args, **kwargs)
 
 class Membership(models.Model):
     STATUS_CHOICES = [
@@ -302,6 +283,17 @@ class Membership(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.group.name}"
+
+    def save(self, *args, **kwargs):
+        if not self.pk:  # New instance
+            logger.info(f"Creating new membership: {self.user.username} -> {self.group.name}")
+        else:
+            logger.info(f"Updating membership: {self.user.username} -> {self.group.name} (ID: {self.pk})")
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        logger.info(f"Deleting membership: {self.user.username} -> {self.group.name} (ID: {self.pk})")
+        super().delete(*args, **kwargs)
 
 class Attendance(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='attendances')

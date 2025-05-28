@@ -26,6 +26,10 @@ import base64
 from .decorators import api_auth_required, api_rate_limit
 from django.core.cache import cache
 from statistics import StatisticsError, mode
+import logging
+
+# Get logger for this file
+logger = logging.getLogger(__name__)
 
 def get_random_quote():
     default_quote = {"quote": "Мудрость приходит со временем", "author": "Народная мудрость"}
@@ -96,23 +100,28 @@ def vacancies(request): # вакансии
 @api_rate_limit(calls=100, period=3600)
 @login_required
 def reviews(request): # отзывы
-    reviews_list = Review.objects.all()
-    
-    if request.method == 'POST' and request.user.is_authenticated:
-        if request.user.is_staff:
-            messages.error(request, 'Администраторы не могут оставлять отзывы')
+    try:
+        reviews_list = Review.objects.all()
+        logger.info(f"Fetching all reviews. Total count: {reviews_list.count()}")
+        
+        if request.method == 'POST' and request.user.is_authenticated:
+            if request.user.is_staff:
+                logger.warning(f"Admin user {request.user.username} attempted to create review")
+                messages.error(request, 'Администраторы не могут оставлять отзывы')
+                return redirect('main:reviews')
+                
+            review = Review.objects.create(
+                name=request.user.get_full_name() or request.user.username,
+                rating=request.POST.get('rating'),
+                text=request.POST.get('text')
+            )
+            logger.info(f"New review created by {request.user.username} with rating {review.rating}")
             return redirect('main:reviews')
-            
-        Review.objects.create(
-            name=request.user.get_full_name() or request.user.username,
-            rating=request.POST.get('rating'),
-            text=request.POST.get('text')
-        )
-        return redirect('main:reviews')
 
-    return render(request, 'reviews.html', {
-        'reviews': reviews_list
-    })
+        return render(request, 'reviews.html', {'reviews': reviews_list})
+    except Exception as e:
+        logger.error(f"Error in reviews view: {str(e)}", exc_info=True)
+        raise
 
 @api_auth_required
 @api_rate_limit(calls=50, period=3600)
@@ -153,15 +162,30 @@ def review_create(request):
 
 @login_required
 def review_edit(request, pk):
-    review = get_object_or_404(Review, pk=pk, name=request.user.get_full_name() or request.user.username)
-    if request.method == 'POST':
-        review.rating = request.POST.get('rating')
-        review.text = request.POST.get('text')
-        review.is_approved = False
-        review.save()
-        messages.success(request, 'Отзыв успешно обновлен и ожидает модерации')
-        return redirect('main:review_list')
-    return render(request, 'reviews/form.html', {'review': review})
+    try:
+        review = get_object_or_404(Review, pk=pk, name=request.user.get_full_name() or request.user.username)
+        logger.info(f"User {request.user.username} attempting to edit review {pk}")
+        
+        if request.method == 'POST':
+            old_rating = review.rating
+            new_rating = request.POST.get('rating')
+            review.rating = new_rating
+            review.text = request.POST.get('text')
+            review.is_approved = False
+            review.save()
+            
+            logger.info(f"Review {pk} updated by {request.user.username}. Rating changed from {old_rating} to {new_rating}")
+            messages.success(request, 'Отзыв успешно обновлен и ожидает модерации')
+            return redirect('main:review_list')
+            
+        return render(request, 'reviews/form.html', {'review': review})
+    except Review.DoesNotExist:
+        logger.warning(f"User {request.user.username} attempted to edit non-existent review {pk}")
+        messages.error(request, 'Отзыв не найден')
+        return redirect('main:reviews')
+    except Exception as e:
+        logger.error(f"Error editing review {pk}: {str(e)}", exc_info=True)
+        raise
 
 @login_required
 def review_delete(request, pk):
@@ -177,8 +201,11 @@ def register_view(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            logger.info(f"New user registered: {user.username}")
             login(request, user)
             return redirect('main:home')
+        else:
+            logger.warning(f"Failed registration attempt with errors: {form.errors}")
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
@@ -189,7 +216,10 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+            logger.info(f"User logged in: {user.username}")
             return redirect('main:home')
+        else:
+            logger.warning(f"Failed login attempt for username: {request.POST.get('username')}")
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
@@ -201,123 +231,128 @@ def logout_view(request):
 @api_auth_required
 @api_rate_limit(calls=100, period=3600)
 def groups(request, year=None, month=None, min_price=None, max_price=None, min_duration=None, max_duration=None):
-    # Поскольку декоратор уже проверяет аутентификацию, 
-    # мы можем быть уверены что request.user существует
-    groups_list = Group.objects.filter(is_active=True)
-    
-    # Фильтрация по дате
-    if year and month:
-        groups_list = groups_list.filter(start_date__year=year, start_date__month=month)
-    
-    # Фильтрация по цене
-    if min_price and max_price:
-        groups_list = groups_list.filter(price__range=(min_price, max_price))
+    try:
+        logger.info(f"Fetching groups with filters: year={year}, month={month}")
+        # Поскольку декоратор уже проверяет аутентификацию, 
+        # мы можем быть уверены что request.user существует
+        groups_list = Group.objects.filter(is_active=True)
         
-    # Фильтрация по длительности
-    if min_duration and max_duration:
-        groups_list = groups_list.filter(duration__range=(min_duration, max_duration))
-    
-    # Остальной код view остается без изменений
-    # Сортировка
-    sort_by = request.GET.get('sort')
-    if sort_by == 'price_asc':
-        groups_list = groups_list.order_by('price')
-    elif sort_by == 'price_desc':
-        groups_list = groups_list.order_by('-price')
-    elif sort_by == 'duration_asc':
-        groups_list = groups_list.order_by('duration')
-    elif sort_by == 'duration_desc':
-        groups_list = groups_list.order_by('-duration')
-    
-    # Подсчет оставшихся запросов (без ошибки, только для неавторизованных)
-    api_requests_remaining = None
-    if not request.user.is_authenticated:
-        client_ip = request.META.get('REMOTE_ADDR')
-        cache_key = f"ratelimit_{client_ip}"
-        calls_history = cache.get(cache_key, [])
-        api_requests_remaining = 100 - len(calls_history)
-    
-    # Получаем текущее время в UTC
-    now = timezone.now()
-    local_tz = pytz.timezone('Europe/Kaliningrad')  # UTC+2
-    local_time = now.astimezone(local_tz)
-    
-    # Подготавливаем данные для календаря
-    calendar_data = {}
-    for group in groups_list:
-        for date in group.get_schedule_dates():
-            if date not in calendar_data:
-                calendar_data[date] = []
-            calendar_data[date].append({
-                'name': group.name,
-                'start_time': group.start_time,
-                'end_time': group.end_time,
-                'available_spots': group.available_spots
-            })
-    
-    # Сортируем данные календаря по дате
-    calendar_data = dict(sorted(calendar_data.items()))
-    
-    # Подготовка календаря
-    today = timezone.now().date()
-    cal = monthcalendar(today.year, today.month)
-    calendar_weeks = []
-    
-    for week in cal:
-        week_data = []
-        for day_num in week:
-            if day_num != 0:
-                current_date = datetime(today.year, today.month, day_num).date()
-                day_events = []
-                for group in groups_list:
-                    if current_date in group.get_schedule_dates():
-                        day_events.append({
-                            'name': group.name,
-                            'start_time': group.start_time,
-                            'end_time': group.end_time,
-                        })
-                week_data.append(({"day": day_num, "date": current_date}, day_events))
-            else:
-                week_data.append(({"day": 0, "date": None}, []))
-        calendar_weeks.append(week_data)
-    
-    # Get timezone info
-    user_timezone = request.session.get('user_timezone', 'Europe/Minsk')
-    user_tz = pytz.timezone(user_timezone)
-    utc_tz = pytz.UTC
-    
-    now = timezone.now()
-    user_time = now.astimezone(user_tz)
-    utc_time = now.astimezone(utc_tz)
-    
-    for group in groups_list:
-        # Add timezone-aware dates
-        group.local_created = group.created_at.astimezone(user_tz).strftime("%d/%m/%Y %H:%M")
-        group.utc_created = group.created_at.astimezone(utc_tz).strftime("%d/%m/%Y %H:%M")
-        group.local_updated = group.updated_at.astimezone(user_tz).strftime("%d/%m/%Y %H:%M")
-        group.utc_updated = group.updated_at.astimezone(utc_tz).strftime("%d/%m/%Y %H:%M")
+        # Фильтрация по дате
+        if year and month:
+            groups_list = groups_list.filter(start_date__year=year, start_date__month=month)
+        
+        # Фильтрация по цене
+        if min_price and max_price:
+            groups_list = groups_list.filter(price__range=(min_price, max_price))
+            
+        # Фильтрация по длительности
+        if min_duration and max_duration:
+            groups_list = groups_list.filter(duration__range=(min_duration, max_duration))
+        
+        # Остальной код view остается без изменений
+        # Сортировка
+        sort_by = request.GET.get('sort')
+        if sort_by == 'price_asc':
+            groups_list = groups_list.order_by('price')
+        elif sort_by == 'price_desc':
+            groups_list = groups_list.order_by('-price')
+        elif sort_by == 'duration_asc':
+            groups_list = groups_list.order_by('duration')
+        elif sort_by == 'duration_desc':
+            groups_list = groups_list.order_by('-duration')
+        
+        # Подсчет оставшихся запросов (без ошибки, только для неавторизованных)
+        api_requests_remaining = None
+        if not request.user.is_authenticated:
+            client_ip = request.META.get('REMOTE_ADDR')
+            cache_key = f"ratelimit_{client_ip}"
+            calls_history = cache.get(cache_key, [])
+            api_requests_remaining = 100 - len(calls_history)
+        
+        # Получаем текущее время в UTC
+        now = timezone.now()
+        local_tz = pytz.timezone('Europe/Kaliningrad')  # UTC+2
+        local_time = now.astimezone(local_tz)
+        
+        # Подготавливаем данные для календаря
+        calendar_data = {}
+        for group in groups_list:
+            for date in group.get_schedule_dates():
+                if date not in calendar_data:
+                    calendar_data[date] = []
+                calendar_data[date].append({
+                    'name': group.name,
+                    'start_time': group.start_time,
+                    'end_time': group.end_time,
+                    'available_spots': group.available_spots
+                })
+        
+        # Сортируем данные календаря по дате
+        calendar_data = dict(sorted(calendar_data.items()))
+        
+        # Подготовка календаря
+        today = timezone.now().date()
+        cal = monthcalendar(today.year, today.month)
+        calendar_weeks = []
+        
+        for week in cal:
+            week_data = []
+            for day_num in week:
+                if day_num != 0:
+                    current_date = datetime(today.year, today.month, day_num).date()
+                    day_events = []
+                    for group in groups_list:
+                        if current_date in group.get_schedule_dates():
+                            day_events.append({
+                                'name': group.name,
+                                'start_time': group.start_time,
+                                'end_time': group.end_time,
+                            })
+                    week_data.append(({"day": day_num, "date": current_date}, day_events))
+                else:
+                    week_data.append(({"day": 0, "date": None}, []))
+            calendar_weeks.append(week_data)
+        
+        # Get timezone info
+        user_timezone = request.session.get('user_timezone', 'Europe/Minsk')
+        user_tz = pytz.timezone(user_timezone)
+        utc_tz = pytz.UTC
+        
+        now = timezone.now()
+        user_time = now.astimezone(user_tz)
+        utc_time = now.astimezone(utc_tz)
+        
+        for group in groups_list:
+            # Add timezone-aware dates
+            group.local_created = group.created_at.astimezone(user_tz).strftime("%d/%m/%Y %H:%M")
+            group.utc_created = group.created_at.astimezone(utc_tz).strftime("%d/%m/%Y %H:%M")
+            group.local_updated = group.updated_at.astimezone(user_tz).strftime("%d/%m/%Y %H:%M")
+            group.utc_updated = group.updated_at.astimezone(utc_tz).strftime("%d/%m/%Y %H:%M")
 
-    # Добавляем форматирование дат в DD/MM/YYYY для calendar_data
-    for date in calendar_data:
-        for session in calendar_data[date]:
-            session['date_formatted'] = date.strftime("%d/%m/%Y")
-            session['start_time'] = session['start_time'].strftime("%H:%M")
-            session['end_time'] = session['end_time'].strftime("%H:%M")
-    
-    context = {
-        'groups': groups_list,
-        'current_sort': sort_by,
-        'calendar_data': calendar_data,
-        'current_time': local_time.strftime("%d/%m/%Y %H:%M"),
-        'calendar_weeks': calendar_weeks,
-        'api_requests_remaining': api_requests_remaining,
-        'user_timezone': user_timezone,
-        'utc_timezone': 'UTC',
-        'user_time': user_time.strftime("%d/%m/%Y %H:%M"),
-        'utc_time': utc_time.strftime("%d/%m/%Y %H:%M"),
-    }
-    
-    return render(request, 'groups.html', context)
+        # Добавляем форматирование дат в DD/MM/YYYY для calendar_data
+        for date in calendar_data:
+            for session in calendar_data[date]:
+                session['date_formatted'] = date.strftime("%d/%m/%Y")
+                session['start_time'] = session['start_time'].strftime("%H:%M")
+                session['end_time'] = session['end_time'].strftime("%H:%M")
+        
+        context = {
+            'groups': groups_list,
+            'current_sort': sort_by,
+            'calendar_data': calendar_data,
+            'current_time': local_time.strftime("%d/%m/%Y %H:%M"),
+            'calendar_weeks': calendar_weeks,
+            'api_requests_remaining': api_requests_remaining,
+            'user_timezone': user_timezone,
+            'utc_timezone': 'UTC',
+            'user_time': user_time.strftime("%d/%m/%Y %H:%M"),
+            'utc_time': utc_time.strftime("%d/%m/%Y %H:%M"),
+        }
+        
+        return render(request, 'groups.html', context)
+    except Exception as e:
+        logger.error(f"Error in groups view: {str(e)}", exc_info=True)
+        raise
 
 @login_required
 def profile(request):
@@ -374,24 +409,32 @@ def my_classes(request):
 
 @login_required
 def join_group(request, group_id):
-    # Prevent instructors from enrolling
-    if request.user.is_instructor:
-        messages.error(request, 'Инструкторы не могут записываться на занятия')
-        return redirect('main:groups')
+    try:
+        if request.user.is_instructor:
+            logger.warning(f"Instructor {request.user.username} attempted to join group {group_id}")
+            messages.error(request, 'Инструкторы не могут записываться на занятия')
+            return redirect('main:groups')
+            
+        group = get_object_or_404(Group, id=group_id, is_active=True)
+        logger.info(f"User {request.user.username} attempting to join group {group.name}")
         
-    group = get_object_or_404(Group, id=group_id, is_active=True)
-    
-    if group.available_spots <= 0:
-        messages.error(request, 'В группе нет свободных мест')
-        return redirect('main:groups')
+        if group.available_spots <= 0:
+            logger.warning(f"User {request.user.username} attempted to join full group {group.name}")
+            messages.error(request, 'В группе нет свободных мест')
+            return redirect('main:groups')
+            
+        if Membership.objects.filter(user=request.user, group=group).exists():
+            logger.info(f"User {request.user.username} already member of group {group.name}")
+            messages.warning(request, 'Вы уже записаны в эту группу')
+            return redirect('main:my_classes')
         
-    if Membership.objects.filter(user=request.user, group=group).exists():
-        messages.warning(request, 'Вы уже записаны в эту группу')
+        membership = Membership.objects.create(user=request.user, group=group)
+        logger.info(f"User {request.user.username} successfully joined group {group.name}. Membership ID: {membership.id}")
+        messages.success(request, f'Вы успешно записались в группу {group.name}')
         return redirect('main:my_classes')
-    
-    Membership.objects.create(user=request.user, group=group)
-    messages.success(request, f'Вы успешно записались в группу {group.name}')
-    return redirect('main:my_classes')
+    except Exception as e:
+        logger.error(f"Error joining group {group_id}: {str(e)}", exc_info=True)
+        raise
 
 @login_required
 def leave_group(request, membership_id):
@@ -406,17 +449,25 @@ def leave_group(request, membership_id):
 
 @login_required
 def freeze_membership(request, membership_id):
-    membership = get_object_or_404(Membership, id=membership_id, user=request.user)
-    
-    if membership.status == 'active':
-        membership.status = 'frozen'
-        messages.success(request, 'Абонемент заморожен')
-    elif membership.status == 'frozen':
-        membership.status = 'active'
-        messages.success(request, 'Абонемент активирован')
+    try:
+        membership = get_object_or_404(Membership, id=membership_id, user=request.user)
+        logger.info(f"User {request.user.username} attempting to change membership {membership_id} status")
         
-    membership.save()
-    return redirect('main:my_classes')
+        old_status = membership.status
+        if membership.status == 'active':
+            membership.status = 'frozen'
+            action = 'frozen'
+        elif membership.status == 'frozen':
+            membership.status = 'active'
+            action = 'activated'
+            
+        membership.save()
+        logger.info(f"Membership {membership_id} status changed from {old_status} to {membership.status}")
+        messages.success(request, f'Абонемент {action}')
+        return redirect('main:my_classes')
+    except Exception as e:
+        logger.error(f"Error freezing membership {membership_id}: {str(e)}", exc_info=True)
+        raise
 
 @login_required
 def my_sessions(request):
