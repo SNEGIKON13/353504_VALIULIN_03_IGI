@@ -52,5 +52,9 @@ urlpatterns = [
     re_path(r'^groups/price/(?P<min_price>\d+)-(?P<max_price>\d+)/$', views.groups, name='groups_by_price'),
     re_path(r'^groups/duration/(?P<min_duration>\d+)-(?P<max_duration>\d+)/$', views.groups, name='groups_by_duration'),
     re_path(r'^instructor/(?P<username>[\w.@+-]+)/$', views.instructor_profile, name='instructor_profile'),
-    re_path(r'^reviews/rating/(?P<rating>[1-5])/$', views.reviews_by_rating, name='reviews_by_rating'),
+    re_path(r'^reviews/rating/(?P<rating>[1-5])/$', views.reviews_by_rating, name='reviews_by_rating'),    # URL-паттерны для CRUD операций с группами
+    path('manage/groups/', views.admin_groups, name='admin_groups'),
+    path('manage/groups/create/', views.admin_group_create, name='admin_group_create'),
+    path('manage/groups/<int:group_id>/edit/', views.admin_group_edit, name='admin_group_edit'),
+    path('manage/groups/<int:group_id>/delete/', views.admin_group_delete, name='admin_group_delete'),
 ]

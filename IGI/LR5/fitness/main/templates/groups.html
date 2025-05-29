@@ -121,30 +121,33 @@
 
     <div class="row mb-4">
         <div class="col-12">
-            <h3>Расписание занятий</h3>
+            <h3>Ближайшие занятия</h3>
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Дата</th>
-                            <th>Группы</th>
+                            <th>Группа</th>
+                            <th>Следующее занятие</th>
+                            <th>Время</th>
+                            <th>Места</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for date, sessions in calendar_data.items %}
-                        <tr>
-                            <td>{{ date|date:"d/m/Y" }}</td>
-                            <td>
-                                {% for session in sessions %}
-                                <div class="mb-1">
-                                    {{ session.name }} ({{ session.start_time|time:"H:i" }} - {{ session.end_time|time:"H:i" }})
-                                    <span class="badge bg-{% if session.available_spots > 0 %}success{% else %}danger{% endif %}">
-                                        {{ session.available_spots }} мест
+                        {% for group in groups %}
+                            {% with next_session=group.get_next_session %}
+                            {% if next_session %}
+                            <tr>
+                                <td>{{ group.name }}</td>
+                                <td>{{ next_session|date:"d/m/Y" }}</td>
+                                <td>{{ group.start_time|time:"H:i" }} - {{ group.end_time|time:"H:i" }}</td>
+                                <td>
+                                    <span class="badge bg-{% if group.available_spots > 0 %}success{% else %}danger{% endif %}">
+                                        {{ group.available_spots }} мест
                                     </span>
-                                </div>
-                                {% endfor %}
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% endwith %}
                         {% endfor %}
                     </tbody>
                 </table>

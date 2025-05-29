@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.db.models import Count, Sum, F, Q, Case, When, Value, FloatField, Avg
 from django.utils import timezone
 from datetime import datetime
-from .models import Article, About, FAQ, Staff, Vacancy, Review, Promo, CustomUser, Group, Membership, Attendance
+from .models import Article, About, FAQ, Staff, Vacancy, Review, Promo, CustomUser, Group, Membership, Attendance, Gym
 from .forms import CustomUserCreationForm
 import requests
 from django.utils import timezone
@@ -27,6 +27,9 @@ from .decorators import api_auth_required, api_rate_limit
 from django.core.cache import cache
 from statistics import StatisticsError, mode
 import logging
+from decimal import Decimal
+from django.core.exceptions import ValidationError
+from django.utils.dateparse import parse_time
 
 # Get logger for this file
 logger = logging.getLogger(__name__)
@@ -150,15 +153,44 @@ def review_list(request):
 
 @login_required
 def review_create(request):
-    if request.method == 'POST':
-        Review.objects.create(
-            name=request.user.get_full_name() or request.user.username,
-            rating=request.POST.get('rating'),
-            text=request.POST.get('text')
-        )
-        messages.success(request, 'Отзыв успешно добавлен и ожидает модерации')
+    try:
+        if request.method == 'POST':
+            # Get required fields with proper validation
+            rating = request.POST.get('rating')
+            text = request.POST.get('text')
+
+            # Validate required fields
+            if not rating or not text:
+                messages.error(request, 'Пожалуйста, заполните все обязательные поля')
+                return render(request, 'reviews/form.html')
+
+            # Validate rating range
+            try:
+                rating = int(rating)
+                if rating < 1 or rating > 5:
+                    raise ValueError('Invalid rating range')
+            except (ValueError, TypeError):
+                messages.error(request, 'Некорректная оценка. Выберите от 1 до 5')
+                return render(request, 'reviews/form.html')
+
+            # Create the review
+            review = Review.objects.create(
+                name=request.user.get_full_name() or request.user.username,
+                rating=rating,
+                text=text
+            )
+
+            # Log successful creation
+            logger.info(f"Review created successfully by {request.user.username} with ID {review.id}")
+            messages.success(request, 'Отзыв успешно добавлен и ожидает модерации')
+            return redirect('main:reviews')
+
+        return render(request, 'reviews/form.html')
+
+    except Exception as e:
+        logger.error(f"Error creating review: {str(e)}", exc_info=True)
+        messages.error(request, 'Произошла ошибка при создании отзыва. Попробуйте позже.')
         return redirect('main:reviews')
-    return render(request, 'reviews/form.html')
 
 @login_required
 def review_edit(request, pk):
@@ -591,6 +623,9 @@ def is_instructor(user):
 def is_admin(user):
     return user.is_authenticated and user.is_staff
 
+def is_superuser(user):
+    return user.is_superuser
+
 @user_passes_test(is_admin)
 def admin_statistics(request):
     # Get filter parameters and set defaults
@@ -714,6 +749,84 @@ def admin_statistics(request):
 
     return render(request, 'admin/statistics.html', context)
 
+@user_passes_test(is_superuser)
+def admin_groups(request):
+    groups = Group.objects.all().order_by('name')
+    return render(request, 'admin/admin_groups.html', {'groups': groups})
+
+@user_passes_test(is_superuser)
+def admin_group_create(request):
+    try:
+        if request.method == "POST":
+            # Convert and validate form data
+            try:
+                price = Decimal(request.POST['price'])
+                duration = int(request.POST['duration'])
+                capacity = int(request.POST['capacity'])
+                start_time = parse_time(request.POST['start_time'])
+                end_time = parse_time(request.POST['end_time'])
+                
+                group = Group.objects.create(
+                    name=request.POST['name'].strip(),
+                    description=request.POST['description'].strip(),
+                    price=price,
+                    duration=duration,
+                    capacity=capacity,
+                    gym_id=request.POST['gym'],
+                    start_date=request.POST['start_date'],
+                    start_time=start_time,
+                    end_time=end_time,
+                    repeat_days=int(request.POST['repeat_days']),
+                    total_sessions=int(request.POST['total_sessions'])
+                )
+                
+                # Add instructors
+                instructor_ids = request.POST.getlist('instructors[]')
+                if instructor_ids:
+                    group.instructors.set(instructor_ids)
+                
+                messages.success(request, 'Группа успешно создана')
+                return redirect('main:admin_groups')
+                
+            except (ValueError, TypeError, ValidationError) as e:
+                messages.error(request, f'Ошибка валидации данных: {str(e)}')
+                return redirect('main:admin_group_create')
+                
+        # GET request
+        gyms = Gym.objects.all()
+        instructors = CustomUser.objects.filter(is_instructor=True)
+        context = {
+            'gyms': gyms,
+            'instructors': instructors,
+            'today': timezone.now().date(),
+        }
+        return render(request, 'admin/admin_group_form.html', context)
+        
+    except Exception as e:
+        logger.error(f"Error creating group: {str(e)}", exc_info=True)
+        messages.error(request, 'Произошла ошибка при создании группы')
+        return redirect('main:admin_groups')
+
+@user_passes_test(is_superuser)
+def admin_group_edit(request, group_id):
+    group = get_object_or_404(Group, id=group_id)
+    if request.method == "POST":
+        group.name = request.POST['name']
+        group.price = request.POST['price']
+        group.duration = request.POST['duration']
+        group.capacity = request.POST['capacity']
+        group.start_date = request.POST['start_date']
+        group.save()
+        return redirect('main:admin_groups')
+    return render(request, 'admin/admin_group_form.html', {'group': group})
+
+@user_passes_test(is_superuser)
+def admin_group_delete(request, group_id):
+    if request.method == "POST":
+        group = get_object_or_404(Group, id=group_id)
+        group.delete()
+    return redirect('main:admin_groups')
+
 def instructor_profile(request, username):
     """View for displaying instructor's profile and their groups"""
     instructor = get_object_or_404(CustomUser, username=username, is_instructor=True)
@@ -753,6 +866,55 @@ def reviews_by_rating(request, rating):
     return render(request, 'reviews.html', {
         'reviews': reviews_list,
         'current_rating': rating
+    })
+
+@login_required
+def update_subscription(request):
+    if request.method == 'POST':
+        if request.user.is_instructor:
+            messages.error(request, 'Инструкторы не могут иметь абонемент')
+            return redirect('main:profile')
+        
+        # Existing subscription logic
+        membership = Membership.objects.filter(user=request.user, status='active').first()
+        if not membership:
+            messages.error(request, 'У вас нет активного абонемента')
+            return redirect('main:profile')
+        
+        # Update membership details based on the form
+        membership_form_data = request.POST
+        membership.price = membership_form_data.get('price', membership.price)
+        membership.duration = membership_form_data.get('duration', membership.duration)
+        membership.capacity = membership_form_data.get('capacity', membership.capacity)
+        
+        # Handle gym and instructor changes
+        gym_id = membership_form_data.get('gym')
+        if gym_id:
+            membership.gym_id = gym_id
+        
+        instructor_ids = membership_form_data.getlist('instructors')
+        if instructor_ids:
+            membership.instructors.set(instructor_ids)
+        else:
+            membership.instructors.clear()  # Remove all instructors if none are selected
+        
+        membership.save()
+        messages.success(request, 'Абонемент успешно обновлен')
+        return redirect('main:profile')
+    
+    # GET request - show current subscription details
+    membership = Membership.objects.filter(user=request.user, status='active').first()
+    if not membership:
+        messages.error(request, 'У вас нет активного абонемента')
+        return redirect('main:profile')
+    
+    gyms = Gym.objects.all()
+    instructors = CustomUser.objects.filter(is_instructor=True)
+    
+    return render(request, 'update_subscription.html', {
+        'membership': membership,
+        'gyms': gyms,
+        'instructors': instructors
     })
 
 

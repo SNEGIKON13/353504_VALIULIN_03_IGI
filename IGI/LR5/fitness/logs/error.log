@@ -1,0 +1,68 @@
+ERROR 2025-05-29 11:32:24,656 views 9656 12144 Error in groups view: 'Group' object has no attribute 'get_schedule_dates'
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 280, in groups
+    for date in group.get_schedule_dates():
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Group' object has no attribute 'get_schedule_dates'
+ERROR 2025-05-29 11:42:47,776 views 14432 21648 Error in groups view: 'Group' object has no attribute 'get_schedule_dates'
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 280, in groups
+    for date in group.get_schedule_dates():
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Group' object has no attribute 'get_schedule_dates'
+ERROR 2025-05-29 11:43:23,767 views 14432 21648 Error creating group: name 'ValidationError' is not defined
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 760, in admin_group_create
+    group.full_clean()  # Validate all fields
+    ^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\models\base.py", line 1654, in full_clean
+    self.clean()
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py", line 355, in clean
+    if self.capacity and self.gym and self.capacity > self.gym.capacity:
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'str' and 'int'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 764, in admin_group_create
+    except ValidationError as e:
+           ^^^^^^^^^^^^^^^
+NameError: name 'ValidationError' is not defined
+ERROR 2025-05-29 11:44:17,594 views 28492 10024 Error creating group: name 'ValidationError' is not defined
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 760, in admin_group_create
+    group.full_clean()  # Validate all fields
+    ^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\models\base.py", line 1654, in full_clean
+    self.clean()
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py", line 355, in clean
+    if self.capacity and self.gym and self.capacity > self.gym.capacity:
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'str' and 'int'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 764, in admin_group_create
+    except ValidationError as e:
+           ^^^^^^^^^^^^^^^
+NameError: name 'ValidationError' is not defined
+ERROR 2025-05-29 11:48:28,149 views 18276 1080 Error creating group: name 'Decimal' is not defined
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 731, in admin_group_create
+    price = Decimal(request.POST['price'])
+            ^^^^^^^
+NameError: name 'Decimal' is not defined
+ERROR 2025-05-29 11:52:09,353 views 21112 29476 Error creating group: name 'Decimal' is not defined
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 760, in admin_group_create
+    price = Decimal(request.POST['price'])
+            ^^^^^^^
+NameError: name 'Decimal' is not defined
+ERROR 2025-05-29 11:55:05,389 views 25152 14392 Error in groups view: 'Group' object has no attribute 'get_schedule_dates'
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 312, in groups
+    for date in group.get_schedule_dates():
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Group' object has no attribute 'get_schedule_dates'

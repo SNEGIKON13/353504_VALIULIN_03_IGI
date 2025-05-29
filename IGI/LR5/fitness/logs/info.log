@@ -12,3 +12,701 @@
 [2025-05-28 19:03:30] INFO django.utils.autoreload: Watching for file changes with StatReloader
 [2025-05-28 19:03:40] INFO django.server: "GET / HTTP/1.1" 200 1857
 [2025-05-28 19:04:42] INFO django.server: "GET /news/ HTTP/1.1" 200 1440
+[2025-05-29 10:52:32] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 10:52:34] INFO django.server: "GET / HTTP/1.1" 200 1857
+[2025-05-29 10:52:37] INFO django.server: "GET /login/ HTTP/1.1" 200 2658
+[2025-05-29 10:52:40] INFO main.views: User logged in: admin
+[2025-05-29 10:52:40] INFO django.server: "POST /login/ HTTP/1.1" 302 0
+[2025-05-29 10:52:41] INFO django.server: "GET / HTTP/1.1" 200 2558
+[2025-05-29 10:52:44] WARNING django.request: Not Found: /admin/groups/
+[2025-05-29 10:52:44] WARNING django.server: "GET /admin/groups/ HTTP/1.1" 404 8443
+[2025-05-29 10:52:59] WARNING django.request: Not Found: /admin/groups/
+[2025-05-29 10:52:59] WARNING django.server: "GET /admin/groups/ HTTP/1.1" 404 8443
+[2025-05-29 10:53:00] WARNING django.request: Not Found: /admin/groups/
+[2025-05-29 10:53:00] WARNING django.server: "GET /admin/groups/ HTTP/1.1" 404 8443
+[2025-05-29 10:53:03] INFO django.server: "GET /admin/ HTTP/1.1" 200 13934
+[2025-05-29 10:53:03] INFO django.server: "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2025-05-29 10:53:03] INFO django.server: "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+[2025-05-29 10:53:03] INFO django.server: "GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+[2025-05-29 10:53:03] INFO django.server: "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2025-05-29 10:53:03] INFO django.server: "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+[2025-05-29 10:53:03] INFO django.server: "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2025-05-29 10:53:03] INFO django.server: "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2025-05-29 10:53:03] INFO django.server: "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2025-05-29 10:53:03] INFO django.server: "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+[2025-05-29 10:53:07] INFO django.server: "GET / HTTP/1.1" 200 2617
+[2025-05-29 10:53:23] WARNING django.request: Not Found: /admin/groups/
+[2025-05-29 10:53:23] WARNING django.server: "GET /admin/groups/ HTTP/1.1" 404 8443
+[2025-05-29 10:54:43] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\urls.py changed, reloading.
+[2025-05-29 10:54:44] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 10:56:00] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\urls.py changed, reloading.
+[2025-05-29 10:56:01] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 10:56:06] INFO django.server: "GET / HTTP/1.1" 200 2499
+[2025-05-29 10:56:07] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 10:56:11] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 10:56:11] INFO django.server: "GET /groups/ HTTP/1.1" 200 14234
+[2025-05-29 10:56:13] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 10:56:14] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 2415
+[2025-05-29 10:56:17] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 2415
+[2025-05-29 10:56:18] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 2415
+[2025-05-29 10:56:20] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 2415
+[2025-05-29 10:58:25] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py changed, reloading.
+[2025-05-29 10:58:26] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 10:58:37] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py changed, reloading.
+[2025-05-29 10:58:38] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 10:59:10] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py changed, reloading.
+[2025-05-29 10:59:11] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 10:59:15] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 3202
+[2025-05-29 10:59:16] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 10:59:18] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 3202
+[2025-05-29 10:59:37] INFO main.models: Creating new group: Группа по йоге
+[2025-05-29 10:59:37] ERROR django.request: Internal Server Error: /manage/groups/create/
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: NOT NULL constraint failed: groups.start_time
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 729, in admin_group_create
+    group = Group.objects.create(
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py", line 264, in save
+    super().save(*args, **kwargs)
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\models\query.py", line 1864, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1882, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: NOT NULL constraint failed: groups.start_time
+[2025-05-29 10:59:37] ERROR django.server: "POST /manage/groups/create/ HTTP/1.1" 500 179412
+[2025-05-29 11:01:07] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py changed, reloading.
+[2025-05-29 11:01:08] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:01:36] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py changed, reloading.
+[2025-05-29 11:01:37] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:02:52] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py changed, reloading.
+[2025-05-29 11:02:52] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:02:58] INFO django.server: "GET / HTTP/1.1" 200 2615
+[2025-05-29 11:03:00] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 11:03:01] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 3202
+[2025-05-29 11:05:53] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 4997
+[2025-05-29 11:05:56] WARNING django.request: Not Found: /manage/
+[2025-05-29 11:05:56] WARNING django.server: "GET /manage/ HTTP/1.1" 404 12288
+[2025-05-29 11:05:58] INFO django.server: "GET / HTTP/1.1" 200 2525
+[2025-05-29 11:05:59] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 11:06:01] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 4997
+[2025-05-29 11:23:23] INFO django.server: "GET /admin/ HTTP/1.1" 200 13934
+[2025-05-29 11:23:23] INFO django.server: "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2025-05-29 11:23:23] INFO django.server: "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+[2025-05-29 11:23:23] INFO django.server: "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2025-05-29 11:23:23] INFO django.server: "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2025-05-29 11:23:23] INFO django.server: "GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+[2025-05-29 11:23:23] INFO django.server: "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+[2025-05-29 11:23:23] INFO django.server: "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2025-05-29 11:23:23] INFO django.server: "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2025-05-29 11:23:23] INFO django.server: "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+[2025-05-29 11:23:26] INFO django.server: "GET /admin/main/gym/ HTTP/1.1" 200 13119
+[2025-05-29 11:23:26] INFO django.server: "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[2025-05-29 11:23:26] INFO django.server: "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[2025-05-29 11:23:26] INFO django.server: "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[2025-05-29 11:23:26] INFO django.server: "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[2025-05-29 11:23:26] INFO django.server: "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[2025-05-29 11:23:26] INFO django.server: "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[2025-05-29 11:23:26] INFO django.server: "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[2025-05-29 11:23:26] INFO django.server: "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[2025-05-29 11:23:26] INFO django.server: "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[2025-05-29 11:23:26] INFO django.server: "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+[2025-05-29 11:23:26] INFO django.server: "GET /static/admin/js/filters.js HTTP/1.1" 304 0
+[2025-05-29 11:23:26] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:23:26] INFO django.server: "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[2025-05-29 11:23:28] INFO django.server: "GET /admin/main/gym/add/ HTTP/1.1" 200 14890
+[2025-05-29 11:23:28] INFO django.server: "GET /static/admin/css/forms.css HTTP/1.1" 304 0
+[2025-05-29 11:23:28] INFO django.server: "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+[2025-05-29 11:23:28] INFO django.server: "GET /static/admin/css/widgets.css HTTP/1.1" 304 0
+[2025-05-29 11:23:28] INFO django.server: "GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+[2025-05-29 11:23:28] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:23:33] INFO django.server: "POST /admin/main/gym/add/ HTTP/1.1" 302 0
+[2025-05-29 11:23:33] INFO django.server: "GET /admin/main/gym/ HTTP/1.1" 200 14766
+[2025-05-29 11:23:34] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:23:38] INFO django.server: "GET /admin/main/customuser/add/ HTTP/1.1" 200 21234
+[2025-05-29 11:23:38] INFO django.server: "GET /static/admin/js/calendar.js HTTP/1.1" 304 0
+[2025-05-29 11:23:38] INFO django.server: "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 304 0
+[2025-05-29 11:23:38] INFO django.server: "GET /static/admin/css/unusable_password_field.css HTTP/1.1" 200 663
+[2025-05-29 11:23:38] INFO django.server: "GET /static/admin/js/unusable_password_field.js HTTP/1.1" 200 1480
+[2025-05-29 11:23:38] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:23:38] INFO django.server: "GET /static/admin/img/icon-calendar.svg HTTP/1.1" 304 0
+[2025-05-29 11:24:00] INFO django.server: "POST /admin/main/customuser/add/ HTTP/1.1" 302 0
+[2025-05-29 11:24:00] INFO django.server: "GET /admin/main/customuser/3/change/ HTTP/1.1" 200 33841
+[2025-05-29 11:24:00] INFO django.server: "GET /static/admin/js/SelectBox.js HTTP/1.1" 200 4530
+[2025-05-29 11:24:00] INFO django.server: "GET /static/admin/js/SelectFilter2.js HTTP/1.1" 200 15709
+[2025-05-29 11:24:01] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:24:01] INFO django.server: "GET /static/admin/img/icon-clock.svg HTTP/1.1" 200 677
+[2025-05-29 11:24:01] INFO django.server: "GET /static/admin/img/selector-icons.svg HTTP/1.1" 200 3291
+[2025-05-29 11:26:20] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 11:26:20] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:26:29] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 11:26:30] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:26:32] INFO django.server: "GET /admin/main/customuser/3/change/ HTTP/1.1" 200 33145
+[2025-05-29 11:26:32] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:26:34] ERROR django.request: Internal Server Error: /admin/main/customuser/3/change/
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\contrib\admin\options.py", line 1987, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\contrib\admin\options.py", line 1843, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\contrib\admin\options.py", line 1888, in _changeform_view
+    form_validated = form.is_valid()
+                     ^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\forms\forms.py", line 206, in is_valid
+    return self.is_bound and not self.errors
+                                 ^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\forms\forms.py", line 201, in errors
+    self.full_clean()
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\forms\forms.py", line 337, in full_clean
+    self._clean_fields()
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\forms\forms.py", line 347, in _clean_fields
+    value = getattr(self, "clean_%s" % name)()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\admin.py", line 20, in clean_birth_date
+    today = date.today()
+            ^^^^
+NameError: name 'date' is not defined
+[2025-05-29 11:26:34] ERROR django.server: "POST /admin/main/customuser/3/change/ HTTP/1.1" 500 148368
+[2025-05-29 11:26:54] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:26:59] ERROR django.request: Internal Server Error: /admin/main/customuser/3/change/
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\contrib\admin\options.py", line 1987, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\contrib\admin\options.py", line 1843, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\contrib\admin\options.py", line 1888, in _changeform_view
+    form_validated = form.is_valid()
+                     ^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\forms\forms.py", line 206, in is_valid
+    return self.is_bound and not self.errors
+                                 ^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\forms\forms.py", line 201, in errors
+    self.full_clean()
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\forms\forms.py", line 337, in full_clean
+    self._clean_fields()
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\forms\forms.py", line 347, in _clean_fields
+    value = getattr(self, "clean_%s" % name)()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\admin.py", line 20, in clean_birth_date
+    today = date.today()
+            ^^^^
+NameError: name 'date' is not defined
+[2025-05-29 11:26:59] ERROR django.server: "POST /admin/main/customuser/3/change/ HTTP/1.1" 500 148368
+[2025-05-29 11:27:02] INFO django.server: "GET / HTTP/1.1" 200 2501
+[2025-05-29 11:27:04] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 11:27:09] INFO django.server: "GET /admin/ HTTP/1.1" 200 14613
+[2025-05-29 11:27:15] INFO django.server: "GET /admin/main/customuser/ HTTP/1.1" 200 18438
+[2025-05-29 11:27:15] INFO django.server: "GET /static/admin/img/icon-no.svg HTTP/1.1" 304 0
+[2025-05-29 11:27:15] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:27:15] INFO django.server: "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 304 0
+[2025-05-29 11:27:15] INFO django.server: "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 304 0
+[2025-05-29 11:27:17] INFO django.server: "GET /admin/ HTTP/1.1" 200 14613
+[2025-05-29 11:27:34] INFO django.server: "GET /admin/main/membership/ HTTP/1.1" 200 13955
+[2025-05-29 11:27:34] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:27:35] INFO django.server: "GET /admin/ HTTP/1.1" 200 14613
+[2025-05-29 11:27:40] INFO django.server: "GET /admin/main/customuser/ HTTP/1.1" 200 18438
+[2025-05-29 11:27:41] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:27:44] INFO django.server: "GET /admin/main/customuser/add/ HTTP/1.1" 200 21234
+[2025-05-29 11:27:44] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:27:55] INFO django.server: "POST /admin/main/customuser/add/ HTTP/1.1" 200 21753
+[2025-05-29 11:27:56] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:29:40] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 11:29:41] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:29:55] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 11:29:55] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:30:00] INFO django.server: "POST /admin/main/customuser/add/ HTTP/1.1" 200 21753
+[2025-05-29 11:30:00] INFO django.server: "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2025-05-29 11:30:00] INFO django.server: "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+[2025-05-29 11:30:00] INFO django.server: "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2025-05-29 11:30:00] INFO django.server: "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+[2025-05-29 11:30:00] INFO django.server: "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2025-05-29 11:30:00] INFO django.server: "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2025-05-29 11:30:00] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:30:00] INFO django.server: "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2025-05-29 11:30:04] INFO django.server: "POST /admin/main/customuser/add/ HTTP/1.1" 200 22011
+[2025-05-29 11:30:04] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:30:07] INFO django.server: "GET /admin/main/staff/ HTTP/1.1" 200 13168
+[2025-05-29 11:30:07] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:30:10] INFO django.server: "GET /admin/main/customuser/ HTTP/1.1" 200 18438
+[2025-05-29 11:30:10] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:30:12] INFO django.server: "GET /admin/main/customuser/add/ HTTP/1.1" 200 21234
+[2025-05-29 11:30:12] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:30:26] INFO django.server: "GET /static/admin/img/calendar-icons.svg HTTP/1.1" 200 2455
+[2025-05-29 11:30:38] INFO django.server: "POST /admin/main/customuser/add/ HTTP/1.1" 200 21995
+[2025-05-29 11:30:38] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:30:50] INFO django.server: "POST /admin/main/customuser/add/ HTTP/1.1" 302 0
+[2025-05-29 11:30:50] INFO django.server: "GET /admin/main/customuser/4/change/ HTTP/1.1" 200 31709
+[2025-05-29 11:30:51] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:30:57] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 11:30:59] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 5209
+[2025-05-29 11:31:49] INFO main.models: Creating new group: 1
+[2025-05-29 11:31:49] INFO django.server: "POST /manage/groups/create/ HTTP/1.1" 302 0
+[2025-05-29 11:31:49] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 3494
+[2025-05-29 11:32:24] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 11:32:24] ERROR main.views: Error in groups view: 'Group' object has no attribute 'get_schedule_dates'
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 280, in groups
+    for date in group.get_schedule_dates():
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Group' object has no attribute 'get_schedule_dates'
+[2025-05-29 11:32:24] ERROR django.request: Internal Server Error: /groups/
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\decorators.py", line 19, in wrapped
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\decorators.py", line 47, in wrapped
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 280, in groups
+    for date in group.get_schedule_dates():
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Group' object has no attribute 'get_schedule_dates'
+[2025-05-29 11:32:24] ERROR django.server: "GET /groups/ HTTP/1.1" 500 82080
+[2025-05-29 11:34:18] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py changed, reloading.
+[2025-05-29 11:34:19] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:34:22] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py changed, reloading.
+[2025-05-29 11:34:23] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:34:40] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 11:34:41] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:34:43] INFO django.server: "GET /admin/main/customuser/4/change/ HTTP/1.1" 200 31485
+[2025-05-29 11:34:44] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 11:37:46] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 11:37:46] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:38:05] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 11:38:06] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:39:39] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 11:39:40] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:40:48] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 11:40:49] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:41:07] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 11:41:07] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:41:39] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 11:41:40] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:42:36] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 11:42:37] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:42:41] INFO django.server: "GET / HTTP/1.1" 200 2565
+[2025-05-29 11:42:44] ERROR django.request: Internal Server Error: /statistics/
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 663, in admin_statistics
+    for date in group.get_all_session_dates():  # We'll add this method to Group model
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Group' object has no attribute 'get_all_session_dates'
+[2025-05-29 11:42:44] ERROR django.server: "GET /statistics/ HTTP/1.1" 500 79686
+[2025-05-29 11:42:47] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 11:42:47] ERROR main.views: Error in groups view: 'Group' object has no attribute 'get_schedule_dates'
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 280, in groups
+    for date in group.get_schedule_dates():
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Group' object has no attribute 'get_schedule_dates'
+[2025-05-29 11:42:47] ERROR django.request: Internal Server Error: /groups/
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\decorators.py", line 19, in wrapped
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\decorators.py", line 47, in wrapped
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 280, in groups
+    for date in group.get_schedule_dates():
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Group' object has no attribute 'get_schedule_dates'
+[2025-05-29 11:42:47] ERROR django.server: "GET /groups/ HTTP/1.1" 500 82064
+[2025-05-29 11:42:53] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 3494
+[2025-05-29 11:42:56] INFO django.server: "POST /manage/groups/1/delete/ HTTP/1.1" 302 0
+[2025-05-29 11:42:56] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 11:42:58] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 5597
+[2025-05-29 11:43:23] INFO main.models: Creating new group: Группа по йоге
+[2025-05-29 11:43:23] ERROR main.views: Error creating group: name 'ValidationError' is not defined
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 760, in admin_group_create
+    group.full_clean()  # Validate all fields
+    ^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\models\base.py", line 1654, in full_clean
+    self.clean()
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py", line 355, in clean
+    if self.capacity and self.gym and self.capacity > self.gym.capacity:
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'str' and 'int'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 764, in admin_group_create
+    except ValidationError as e:
+           ^^^^^^^^^^^^^^^
+NameError: name 'ValidationError' is not defined
+[2025-05-29 11:43:23] INFO django.server: "POST /manage/groups/create/ HTTP/1.1" 302 0
+[2025-05-29 11:43:24] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 3518
+[2025-05-29 11:43:49] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:43:53] INFO django.server: "GET / HTTP/1.1" 200 2535
+[2025-05-29 11:43:54] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 3518
+[2025-05-29 11:43:57] INFO django.server: "POST /manage/groups/2/delete/ HTTP/1.1" 302 0
+[2025-05-29 11:43:57] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 11:43:59] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 5597
+[2025-05-29 11:44:17] INFO main.models: Creating new group: Группа по йоге
+[2025-05-29 11:44:17] ERROR main.views: Error creating group: name 'ValidationError' is not defined
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 760, in admin_group_create
+    group.full_clean()  # Validate all fields
+    ^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\db\models\base.py", line 1654, in full_clean
+    self.clean()
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py", line 355, in clean
+    if self.capacity and self.gym and self.capacity > self.gym.capacity:
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'str' and 'int'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 764, in admin_group_create
+    except ValidationError as e:
+           ^^^^^^^^^^^^^^^
+NameError: name 'ValidationError' is not defined
+[2025-05-29 11:44:17] INFO django.server: "POST /manage/groups/create/ HTTP/1.1" 302 0
+[2025-05-29 11:44:17] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 3518
+[2025-05-29 11:47:14] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py changed, reloading.
+[2025-05-29 11:47:16] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:47:47] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py changed, reloading.
+[2025-05-29 11:47:48] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:47:54] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 3518
+[2025-05-29 11:47:57] INFO django.server: "POST /manage/groups/3/delete/ HTTP/1.1" 302 0
+[2025-05-29 11:47:57] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 11:47:59] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 7274
+[2025-05-29 11:48:05] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:48:07] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 7274
+[2025-05-29 11:48:28] ERROR main.views: Error creating group: name 'Decimal' is not defined
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 731, in admin_group_create
+    price = Decimal(request.POST['price'])
+            ^^^^^^^
+NameError: name 'Decimal' is not defined
+[2025-05-29 11:48:28] INFO django.server: "POST /manage/groups/create/ HTTP/1.1" 302 0
+[2025-05-29 11:48:28] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 11:48:30] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 11:48:33] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 11:48:33] INFO django.server: "GET /groups/ HTTP/1.1" 200 14234
+[2025-05-29 11:50:40] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py changed, reloading.
+[2025-05-29 11:50:41] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:51:35] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py changed, reloading.
+[2025-05-29 11:51:36] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:51:38] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 11:51:42] INFO django.server: "GET / HTTP/1.1" 200 2522
+[2025-05-29 11:51:43] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 11:51:45] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 7274
+[2025-05-29 11:52:09] ERROR main.views: Error creating group: name 'Decimal' is not defined
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 760, in admin_group_create
+    price = Decimal(request.POST['price'])
+            ^^^^^^^
+NameError: name 'Decimal' is not defined
+[2025-05-29 11:52:09] INFO django.server: "POST /manage/groups/create/ HTTP/1.1" 302 0
+[2025-05-29 11:52:09] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 11:52:12] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 11:52:12] INFO django.server: "GET /groups/ HTTP/1.1" 200 14234
+[2025-05-29 11:54:05] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py changed, reloading.
+[2025-05-29 11:54:06] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:54:38] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py changed, reloading.
+[2025-05-29 11:54:38] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:54:41] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 11:54:43] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 7284
+[2025-05-29 11:55:00] INFO main.models: Creating new group: Группа по йоге
+[2025-05-29 11:55:00] INFO django.server: "POST /manage/groups/create/ HTTP/1.1" 302 0
+[2025-05-29 11:55:01] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 3514
+[2025-05-29 11:55:05] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 11:55:05] ERROR main.views: Error in groups view: 'Group' object has no attribute 'get_schedule_dates'
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 312, in groups
+    for date in group.get_schedule_dates():
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Group' object has no attribute 'get_schedule_dates'
+[2025-05-29 11:55:05] ERROR django.request: Internal Server Error: /groups/
+Traceback (most recent call last):
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\decorators.py", line 19, in wrapped
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\decorators.py", line 47, in wrapped
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\views.py", line 312, in groups
+    for date in group.get_schedule_dates():
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Group' object has no attribute 'get_schedule_dates'
+[2025-05-29 11:55:05] ERROR django.server: "GET /groups/ HTTP/1.1" 500 82490
+[2025-05-29 11:57:59] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 11:58:01] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 11:59:12] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 11:59:13] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 12:01:30] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 12:01:31] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 12:01:52] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 12:01:52] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 12:04:07] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 12:04:08] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 12:04:17] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 12:04:17] INFO django.server: "GET /groups/ HTTP/1.1" 200 15940
+[2025-05-29 12:04:26] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 12:04:26] INFO django.server: "GET /groups/ HTTP/1.1" 200 15940
+[2025-05-29 12:04:33] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 3514
+[2025-05-29 12:04:37] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 12:04:37] INFO django.server: "GET /groups/ HTTP/1.1" 200 15940
+[2025-05-29 12:04:49] INFO django.server: "GET /news/ HTTP/1.1" 200 1697
+[2025-05-29 12:04:50] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 12:04:50] INFO django.server: "GET /groups/ HTTP/1.1" 200 15940
+[2025-05-29 12:04:54] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 3514
+[2025-05-29 12:04:56] INFO django.server: "GET /manage/groups/4/edit/ HTTP/1.1" 200 6982
+[2025-05-29 12:05:35] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 12:05:41] INFO django.server: "GET / HTTP/1.1" 200 1857
+[2025-05-29 12:05:44] INFO django.server: "GET /about/ HTTP/1.1" 200 1478
+[2025-05-29 12:05:45] INFO django.server: "GET /news/ HTTP/1.1" 200 1440
+[2025-05-29 12:05:46] INFO django.server: "GET /register/ HTTP/1.1" 200 4889
+[2025-05-29 12:05:48] INFO django.server: "GET /groups/ HTTP/1.1" 302 0
+[2025-05-29 12:05:48] INFO django.server: "GET /login/ HTTP/1.1" 200 2658
+[2025-05-29 12:24:06] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 12:24:10] INFO django.server: "GET / HTTP/1.1" 200 1857
+[2025-05-29 12:24:12] WARNING django.request: Not Found: /favicon.ico
+[2025-05-29 12:24:12] WARNING django.server: "GET /favicon.ico HTTP/1.1" 404 12300
+[2025-05-29 12:24:12] INFO django.server: "GET /news/ HTTP/1.1" 200 1440
+[2025-05-29 12:24:14] INFO django.server: "GET /register/ HTTP/1.1" 200 4889
+[2025-05-29 12:24:15] INFO django.server: "GET /groups/ HTTP/1.1" 302 0
+[2025-05-29 12:24:15] INFO django.server: "GET /login/ HTTP/1.1" 200 2658
+[2025-05-29 12:24:16] INFO django.server: "GET /login/ HTTP/1.1" 200 2658
+[2025-05-29 12:24:19] INFO main.views: User logged in: admin
+[2025-05-29 12:24:19] INFO django.server: "POST /login/ HTTP/1.1" 302 0
+[2025-05-29 12:24:20] INFO django.server: "GET / HTTP/1.1" 200 2544
+[2025-05-29 12:24:21] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 12:24:22] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 12:24:22] INFO django.server: "GET /groups/ HTTP/1.1" 200 14234
+[2025-05-29 12:24:25] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 12:24:27] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 6922
+[2025-05-29 12:24:35] INFO django.server: "GET /admin/ HTTP/1.1" 200 13549
+[2025-05-29 12:24:35] INFO django.server: "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+[2025-05-29 12:24:35] INFO django.server: "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+[2025-05-29 12:24:35] INFO django.server: "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+[2025-05-29 12:24:35] INFO django.server: "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+[2025-05-29 12:24:35] INFO django.server: "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+[2025-05-29 12:24:35] INFO django.server: "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+[2025-05-29 12:24:35] INFO django.server: "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+[2025-05-29 12:24:35] INFO django.server: "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[2025-05-29 12:24:35] INFO django.server: "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+[2025-05-29 13:01:10] INFO django.server: "GET / HTTP/1.1" 200 2561
+[2025-05-29 13:01:12] WARNING django.request: Not Found: /favicon.ico
+[2025-05-29 13:01:12] WARNING django.server: "GET /favicon.ico HTTP/1.1" 404 12300
+[2025-05-29 13:01:19] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 13:01:19] INFO django.server: "GET /groups/ HTTP/1.1" 200 14234
+[2025-05-29 13:01:22] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 13:01:24] INFO django.server: "GET /manage/groups/create/ HTTP/1.1" 200 6922
+[2025-05-29 13:02:07] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\admin.py changed, reloading.
+[2025-05-29 13:02:08] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 13:03:58] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 13:04:02] INFO django.server: "GET / HTTP/1.1" 200 1857
+[2025-05-29 13:04:04] INFO django.server: "GET /groups/ HTTP/1.1" 302 0
+[2025-05-29 13:04:04] INFO django.server: "GET /login/ HTTP/1.1" 200 2658
+[2025-05-29 13:04:08] WARNING main.views: Failed login attempt for username: admin
+[2025-05-29 13:04:08] INFO django.server: "POST /login/ HTTP/1.1" 200 2672
+[2025-05-29 13:04:24] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 13:04:28] INFO django.server: "GET / HTTP/1.1" 200 1857
+[2025-05-29 13:04:31] INFO django.server: "GET /login/ HTTP/1.1" 200 2658
+[2025-05-29 13:04:34] INFO main.views: User logged in: admin
+[2025-05-29 13:04:34] INFO django.server: - Broken pipe from ('127.0.0.1', 57395)
+[2025-05-29 13:04:34] INFO main.views: User logged in: admin
+[2025-05-29 13:04:34] INFO django.server: "POST /login/ HTTP/1.1" 302 0
+[2025-05-29 13:04:36] INFO django.server: "GET / HTTP/1.1" 200 2603
+[2025-05-29 13:04:38] INFO django.server: "GET /staff/ HTTP/1.1" 200 1819
+[2025-05-29 13:04:39] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 13:04:39] INFO django.server: "GET /groups/ HTTP/1.1" 200 14234
+[2025-05-29 13:04:42] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 2415
+[2025-05-29 13:04:58] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 13:05:03] INFO django.server: "GET / HTTP/1.1" 200 2996
+[2025-05-29 13:05:05] INFO django.server: "GET /about/ HTTP/1.1" 200 2457
+[2025-05-29 13:05:06] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 13:05:06] INFO django.server: "GET /groups/ HTTP/1.1" 200 57455
+[2025-05-29 13:07:40] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 13:07:40] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 13:07:48] INFO django.utils.autoreload: C:\Education\IGI\353504_VALIULIN_03\IGI\LR5\fitness\main\models.py changed, reloading.
+[2025-05-29 13:07:48] INFO django.utils.autoreload: Watching for file changes with StatReloader
+[2025-05-29 13:07:50] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 13:07:50] INFO django.server: "GET /groups/ HTTP/1.1" 200 26259
+[2025-05-29 13:07:58] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 9048
+[2025-05-29 13:08:01] INFO django.server: "GET /manage/groups/1/edit/ HTTP/1.1" 200 7089
+[2025-05-29 13:08:14] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 9048
+[2025-05-29 13:08:15] INFO main.views: Fetching groups with filters: year=None, month=None
+[2025-05-29 13:08:15] INFO django.server: "GET /groups/ HTTP/1.1" 200 26259
+[2025-05-29 13:08:19] INFO django.server: "GET /admin/ HTTP/1.1" 200 13549
+[2025-05-29 13:08:19] INFO django.server: "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+[2025-05-29 13:08:19] INFO django.server: "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+[2025-05-29 13:08:19] INFO django.server: "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+[2025-05-29 13:08:19] INFO django.server: "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+[2025-05-29 13:08:19] INFO django.server: "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+[2025-05-29 13:08:19] INFO django.server: "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+[2025-05-29 13:08:19] INFO django.server: "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+[2025-05-29 13:08:19] INFO django.server: "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[2025-05-29 13:08:19] INFO django.server: "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+[2025-05-29 13:08:21] INFO django.server: - Broken pipe from ('127.0.0.1', 57489)
+[2025-05-29 13:08:21] INFO django.server: "GET /admin/main/gym/ HTTP/1.1" 200 15328
+[2025-05-29 13:08:21] INFO django.server: "GET /static/admin/css/changelists.css HTTP/1.1" 200 6878
+[2025-05-29 13:08:21] INFO django.server: "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+[2025-05-29 13:08:21] INFO django.server: "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+[2025-05-29 13:08:21] INFO django.server: "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+[2025-05-29 13:08:21] INFO django.server: "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+[2025-05-29 13:08:21] INFO django.server: "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+[2025-05-29 13:08:21] INFO django.server: "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+[2025-05-29 13:08:21] INFO django.server: "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+[2025-05-29 13:08:21] INFO django.server: "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+[2025-05-29 13:08:21] INFO django.server: "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+[2025-05-29 13:08:22] INFO django.server: "GET /static/admin/js/filters.js HTTP/1.1" 200 978
+[2025-05-29 13:08:22] INFO django.server: "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-05-29 13:08:22] INFO django.server: "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+[2025-05-29 13:08:24] INFO django.server: "GET /admin/ HTTP/1.1" 200 13549
+[2025-05-29 13:08:29] INFO django.server: "GET / HTTP/1.1" 200 2969
+[2025-05-29 13:08:30] INFO django.server: "GET /manage/groups/ HTTP/1.1" 200 9048
+[2025-05-29 13:08:32] INFO django.server: "GET /manage/groups/5/edit/ HTTP/1.1" 200 7082
