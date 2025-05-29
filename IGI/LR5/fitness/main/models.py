@@ -409,7 +409,7 @@ class Membership(models.Model):
     STATUS_CHOICES = [
         ('active', 'Активный'),
         ('frozen', 'Заморожен'),
-        ('completed', 'Завершен'),
+        ('completed', 'Завершен'),  # Add this line
     ]
         
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='memberships')

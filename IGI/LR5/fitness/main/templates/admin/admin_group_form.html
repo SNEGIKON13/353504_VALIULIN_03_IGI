@@ -81,9 +81,18 @@
                             {% if group and instructor in group.instructors.all %}selected{% endif %}>
                         {{ instructor.get_full_name|default:instructor.username }}
                     </option>
+                {% empty %}
+                    <option disabled>Нет доступных инструкторов</option>
                 {% endfor %}
             </select>
             <small class="text-muted">Зажмите Ctrl для выбора нескольких инструкторов</small>
+            {% if not instructors %}
+                <div class="mt-2">
+                    <a href="{% url 'admin:main_customuser_changelist' %}" class="btn btn-sm btn-info">
+                        Добавить инструкторов в админ-панели
+                    </a>
+                </div>
+            {% endif %}
         </div>
 
         <div class="mb-3">

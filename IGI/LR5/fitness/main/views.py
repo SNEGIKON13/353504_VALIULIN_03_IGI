@@ -450,16 +450,17 @@ def join_group(request, group_id):
         group = get_object_or_404(Group, id=group_id, is_active=True)
         logger.info(f"User {request.user.username} attempting to join group {group.name}")
         
+        # Check if user is already a member
+        if request.user.member_groups.filter(id=group_id).exists():
+            logger.warning(f"User {request.user.username} attempted to join group {group.name} but is already a member")
+            messages.warning(request, 'Вы уже записаны в эту группу')
+            return redirect('main:groups')
+        
         if group.available_spots <= 0:
             logger.warning(f"User {request.user.username} attempted to join full group {group.name}")
             messages.error(request, 'В группе нет свободных мест')
             return redirect('main:groups')
             
-        if Membership.objects.filter(user=request.user, group=group).exists():
-            logger.info(f"User {request.user.username} already member of group {group.name}")
-            messages.warning(request, 'Вы уже записаны в эту группу')
-            return redirect('main:my_classes')
-        
         membership = Membership.objects.create(user=request.user, group=group)
         logger.info(f"User {request.user.username} successfully joined group {group.name}. Membership ID: {membership.id}")
         messages.success(request, f'Вы успешно записались в группу {group.name}')
@@ -473,8 +474,15 @@ def leave_group(request, membership_id):
     membership = get_object_or_404(Membership, id=membership_id, user=request.user)
     
     if request.method == 'POST':
+      
+        
+        # Delete the membership after recording the refund
         membership.delete()
         messages.success(request, f'Вы покинули группу {membership.group.name}')
+
+        
+        
+
         return redirect('main:my_classes')
     
     return render(request, 'confirm_leave_group.html', {'membership': membership})
@@ -643,9 +651,9 @@ def admin_statistics(request):
     )
     if selected_group:
         memberships = memberships.filter(group_id=selected_group)
+    total_revenue = memberships.aggregate(total=Sum('group__price'))['total'] or 0
 
     # Total revenue and active clients
-    total_revenue = memberships.aggregate(total=Sum('group__price'))['total'] or 0
     total_active_clients = clients.filter(memberships__status='active').distinct().count()
 
     # Client statistics with spending
@@ -692,7 +700,7 @@ def admin_statistics(request):
             start = datetime.strptime(start_date, '%Y-%m-%d').date()
             end = datetime.strptime(end_date, '%Y-%m-%d').date()
             
-            for date in group.get_all_session_dates():  # We'll add this method to Group model
+            for date in group.get_schedule_dates():  # Changed from get_all_session_dates to get_schedule_dates
                 if start <= date <= end:
                     session_dates.add(date)
             session_count = len(session_dates)
