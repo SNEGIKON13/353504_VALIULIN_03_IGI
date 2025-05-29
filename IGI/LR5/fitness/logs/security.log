@@ -1,0 +1,1 @@
+[2025-05-29 15:24:46] WARNING django.security.csrf: Forbidden (CSRF token from POST incorrect.): /login/
